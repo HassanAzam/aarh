@@ -83,6 +83,37 @@ if ($_POST['listalltowns']=="listalltowns") {
 
 //-----------------------------------------------------------------------------------
 
+if(isset($_POST['action'])) {
+if ($_POST['action']=="listallpollforro") {
+	
+	$cnic = $_POST['cnic'];
+	
+	//preparing query
+	$q = "SELECT * FROM pollingstation WHERE town_ID = (SELECT town_ID from voter WHERE CNIC = '$cnic')";
+	
+	$r = $mysqli->query($q); //executing query
+	
+		if ($r->num_rows > 0) {
+			// output data of each row
+			
+			
+			while($row = $r->fetch_assoc()) {
+				$result .= "<option value='";
+				$result .= $row['poll_ID'];
+				$result .= "'>";
+				$result .= $row['poll_Name'];
+				$result .= "</option>";
+			}
+		} 
+		else {
+			$result = "No poll in DB";
+		}
+	
+	
+	
+}
+}
+
 // Return result
 echo $result;
 $mysqli->close();

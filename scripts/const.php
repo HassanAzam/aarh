@@ -101,6 +101,38 @@ if ($_POST['listconst']=="listconst") {
 	
 }
 }
+
+if(isset($_POST['listallconst'])) {
+if ($_POST['listallconst']=="listallconst") {
+	
+	$cityid = $_POST['cid'];
+	
+	//preparing query
+	$q = "SELECT * FROM constituency";		//return name,id of all cities in DB
+	
+	$r = $mysqli->query($q); //executing query
+	
+		if ($r->num_rows > 0) {
+			// output data of each row
+			
+			$result = '<option>Select Constituency</option>';
+			while($row = $r->fetch_assoc()) {
+				$result .= "<option value='";
+				$result .= $row['const_ID'];
+				$result .= "'>";
+				$result .= $row['const_Name'];
+				$result .= "</option>";
+			}
+			
+		} 
+		else {
+			$result = "<option>No Constituency in this city</option>";
+		}
+	
+	
+	
+}
+}
 //*** List City Ends
 //-----------------------------------------------------------------------------------
 

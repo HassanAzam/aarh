@@ -67,6 +67,12 @@
 			
 		}
 		
+		.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
+		
 		.file {
   visibility: hidden;
   position: absolute;
@@ -329,6 +335,9 @@
             <div class="page-title">
               <div class="title_left">
                 <h3>Manage Political Parties</h3>
+				<div class="notification" id="notif">
+				
+				</div>
               </div>
 
               <div class="title_right">
@@ -370,7 +379,7 @@
 				  
 				  <div class="x_content">
                     <br>
-                    <form class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left" id="addPartyForm">
 
 						
 					
@@ -378,12 +387,12 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Party Name</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="PTI ..." required>
+                          <input type="text" class="form-control" name="partyname" placeholder="PTI ..." required>
                         </div>
                       </div>
 					  </br>
 					  <div class="form-group">
-						<input type="file" name="img[]" class="file">
+						<input type="file" name="file" class="file">
 						<label class="control-label col-md-3 col-sm-3 col-xs-12">Party Flag</label>
 						<div class="input-group col-md-8 col-xs-12">
 						  
@@ -393,12 +402,12 @@
 						  </span>
 						</div>
 					</div>
-					  
+					  <input type="hidden" name="action" value="addparty" />
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                           
-                          <button type="submit" class="btn btn-success">Add City</button>
+                          <button type="submit" class="btn btn-success">Add Party</button>
                         </div>
                       </div>
 
@@ -450,7 +459,30 @@ $(document).on('change', '.file', function(){
   $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
 });
 		
+		$("#addPartyForm").submit(function(e) {
+		console.log("here");
+			e.preventDefault();
+			
+			$.ajax({
+			url: "scripts/party.php", // Url to which the request is send
+			type: "POST",             // Type of request to be send, called as method
+			data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,        // To send DOMDocument or non processed data file it is set to false
+			success: function(data)   // A function to be called if request succeeds
+			{
+			$('#notif').text(data);
+			alert(data);
+			$("#notif").show().delay(2000).fadeOut();
+			}
+			});
+});
+		
+		
       });
+	  
+	  
     </script>
     <!-- /jquery.inputmask -->
 	

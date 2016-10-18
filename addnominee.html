@@ -66,6 +66,11 @@
 			width:70%;
 			
 		}
+		.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
 	</style>
   </head>
 
@@ -324,6 +329,8 @@
             <div class="page-title">
               <div class="title_left">
                 <h3>Manage Nominees</h3>
+				<div class="notification" id="notif">
+				</div>
               </div>
 
               <div class="title_right">
@@ -405,19 +412,12 @@
                           <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Enter CNIC</label>
                         <div class="col-md-6 col-sm-6 col-xs-9">
-                          <input type="text" class="form-control" data-inputmask="'mask': '99999-9999999-9'" required>
+                          <input type="text" class="form-control" id="cnic" data-inputmask="'mask': '99999-9999999-9'" required>
                           <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
 					  
-					  <div class="form-group">
-                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          
-                          <button type="submit" class="btn btn-success">View Details</button>
-                        </div>
-                      </div>
-					  
-					  
+					  			  
 					  
                         </form>
 
@@ -425,6 +425,15 @@
                       <div id="step-2" style="overflow:hidden;">
                         
 						<h2>Choose Party</h2>
+						
+						<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Party</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="partyid" id="listparty">
+                            
+                          </select>
+                        </div>
+                      </div>
 						
                       </div>
 					  
@@ -435,23 +444,13 @@
 						  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Constituency</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="form-control">
-                            <option>Choose Constituency</option>
-                            <option>NA-45</option>
-                            <option>NA-8</option>
-                            <option>NA-87</option>
-                            <option>NA-288</option>
-							<option>NA-14</option>
+                          <select class="form-control" name="constid" id="listconst">
+                           
                           </select>
                         </div>
                       </div>
 					  
-					  <div class="form-group">
-                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          
-                          <button type="submit" class="btn btn-success">Assign Constituency</button>
-                        </div>
-                      </div>
+					  
                     </form>
                       </div>
                      
@@ -501,6 +500,30 @@
     <script>
       $(document).ready(function() {
         $(":input").inputmask();
+		
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/const.php',
+			   data: { listallconst : 'listallconst'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listconst').html(data);	
+			   }
+			 });
+			 
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/party.php',
+			   data: { listallparty : 'listallparty'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listparty').html(data);	
+			   }
+			 });
+		
+		
+		
+		
       });
     </script>
     <!-- /jquery.inputmask -->
@@ -517,7 +540,34 @@
         $('.buttonNext').addClass('btn btn-success');
         $('.buttonPrevious').addClass('btn btn-primary');
         $('.buttonFinish').addClass('btn btn-default');
+		$('.buttonFinish').attr('id','finish');
+
+		
+		
+		
+		$('#finish').click(function(){
+			var cnic = $('#cnic').val();
+			var partyid = $('#listparty').val();
+			var constid = $('#listconst').val();
+			console.log(cnic);
+			console.log(partyid);
+			console.log(constid);
+			$.ajax({
+				   type: "POST",
+				   url: 'scripts/nominee.php',
+				   data: {action : 'addnominee', cnic: cnic, partyid:partyid, constid : constid}, 
+				   success: function(data)
+				   {
+						$('#notif').text(data);
+						$('#notif').show().delay(2000).fadeOut();
+						
+				   }
+				 });
+			});
+		
+
       });
+	  
     </script>
     <!-- /jQuery Smart Wizard -->
 	
