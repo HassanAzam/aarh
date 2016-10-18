@@ -15,7 +15,7 @@ $result = '';
 //*** Add City Code
 //-----------------------------------------------------------------------------------
 
-// Confirm that it's add voter request
+// Confirm that it's add city request
 if (isset($_POST['action'])) {
 if ($_POST['action']=="addcity") {
 	
