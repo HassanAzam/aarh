@@ -73,19 +73,14 @@
   </head>
   
   <?php
-  
+  require('scripts/connection.php');
 		// Confirm that it's add voter request
-if (isset($_POST['action'])) {
-if ($_POST['action']=="listallvoters") {
 	
 	//preparing query
 	$q = "SELECT * FROM voter";	
 	
 	$r = $mysqli->query($q); //executing query
-	
-	
-}
-}
+
   ?>
 
   <body class="nav-md">
@@ -124,7 +119,7 @@ if ($_POST['action']=="listallvoters") {
                   <li><a><img class="customicon" src="images/icons/voter.png"/> Manage Voters <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="addvoter.html">Add Voter</a></li>
-                      <li><a href="searchvoter.html">Search Voters</a></li>
+                      <li><a href="searchvoter.php">Search Voters</a></li>
                     </ul>
                   </li>
                   <li><a><img class="customicon" src="images/icons/constituency.png"/> Manage Constituency <span class="fa fa-chevron-down"></span></a>
@@ -386,25 +381,7 @@ if ($_POST['action']=="listallvoters") {
                       
 					  <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Plus Table Design</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
+                  
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
 						
@@ -587,7 +564,7 @@ if ($_POST['action']=="listallvoters") {
         TableManageButtons.init();
       });
 	  
-	  $( document ).ready(function() {
+	  /*$( document ).ready(function() {
 				
 				$.ajax({
 				   type: "POST",
@@ -599,7 +576,7 @@ if ($_POST['action']=="listallvoters") {
 						console.log("sdsdsd");
 				   }
 			 });
-		});
+		});*/
     </script>
     <!-- /Datatables -->
     
