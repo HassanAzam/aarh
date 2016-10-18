@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2016 at 02:30 PM
+-- Generation Time: Oct 18, 2016 at 03:49 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -46,7 +46,15 @@ CREATE TABLE IF NOT EXISTS `city` (
   `city_ID` int(11) NOT NULL AUTO_INCREMENT,
   `city_Name` varchar(30) NOT NULL,
   PRIMARY KEY (`city_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `city`
+--
+
+INSERT INTO `city` (`city_ID`, `city_Name`) VALUES
+(1, 'Karachi'),
+(2, 'Islamabad');
 
 -- --------------------------------------------------------
 
@@ -60,7 +68,16 @@ CREATE TABLE IF NOT EXISTS `constituency` (
   `const_Name` varchar(10) NOT NULL,
   PRIMARY KEY (`const_ID`),
   UNIQUE KEY `const_Name` (`const_Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `constituency`
+--
+
+INSERT INTO `constituency` (`const_ID`, `city_ID`, `const_Name`) VALUES
+(1, 1, 'NA-1'),
+(2, 2, 'NA-22'),
+(3, 1, 'NA-2');
 
 -- --------------------------------------------------------
 
@@ -137,12 +154,21 @@ CREATE TABLE IF NOT EXISTS `ro` (
 
 CREATE TABLE IF NOT EXISTS `town` (
   `town_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `town_Name` int(11) NOT NULL,
+  `town_Name` varchar(100) NOT NULL,
   `city_ID` int(11) NOT NULL,
   `const_ID` int(11) NOT NULL,
-  PRIMARY KEY (`town_ID`),
-  UNIQUE KEY `city_ID` (`city_ID`,`const_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`town_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Dumping data for table `town`
+--
+
+INSERT INTO `town` (`town_ID`, `town_Name`, `city_ID`, `const_ID`) VALUES
+(13, 'New Karachi', 1, 1),
+(14, 'North Karachi', 1, 1),
+(15, 'D-8', 2, 2),
+(16, 'Mehmoodabad', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -175,6 +201,15 @@ CREATE TABLE IF NOT EXISTS `voter` (
   `city_ID` int(11) NOT NULL,
   PRIMARY KEY (`CNIC`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `voter`
+--
+
+INSERT INTO `voter` (`CNIC`, `voter_Name`, `gender`, `address`, `mobileNumber`, `town_ID`, `city_ID`) VALUES
+('42101-0012547-8', 'Abdul Moiz Khan', 'm', 'PECHS, Mehmoodabad', '0315-9845326', 16, 0),
+('42101-3978849-9', 'Hassan Azam', 'm', '55/9, NEw Karachi', '0334-3387918', 0, 0),
+('49843-9483948-3', 'Syed Rafay', 'm', 'NED', '2545-4545454', 16, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

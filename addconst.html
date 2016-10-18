@@ -66,6 +66,11 @@
 			width:70%;
 			
 		}
+		.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
 	</style>
   </head>
 
@@ -324,6 +329,9 @@
             <div class="page-title">
               <div class="title_left">
                 <h3>Manage Constituencies</h3>
+				<div class="notification" id="notif">
+					
+				</div>
               </div>
 
               <div class="title_right">
@@ -365,7 +373,7 @@
 				  
 				  <div class="x_content">
                     <br>
-                    <form class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left" id="addConstForm">
 
 						
 					
@@ -373,20 +381,15 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Constituency Name</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Like NA-12 or NA-248" required>
+                          <input type="text" class="form-control" name="constname" placeholder="Like NA-12 or NA-248" required>
                         </div>
                       </div>
-					  
+					  <input type="hidden" name="action" value="addconst"/>
 					  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select City</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control">
-                            <option>Choose City</option>
-                            <option>Karachi</option>
-                            <option>Islamabad</option>
-                            <option>Lahore</option>
-                            <option>Quetta</option>
-							<option>Peshawar</option>
+                          <select class="form-control" id="listcities" name="cityid">
+                            
                           </select>
                         </div>
                       </div>
@@ -434,6 +437,49 @@
 	<!-- jquery.inputmask -->
     <script src="vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     
+	
+	<!-- custom jquery for ajax requests -->
+	
+	
+	<script>
+		
+		//------------------------------------------------------------------------------------
+		//AddCityScript
+		
+		$("#addConstForm").submit(function(e) {
+
+		var url = "scripts/const.php"; // the script we handle the form input.
+
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/const.php',
+			   data: $("#addConstForm").serialize(), // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#notif').text(data);	
+					$('#notif').show().delay(2000).fadeOut();
+			   }
+			 });
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+			});
+			
+		$( document ).ready(function() {
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/city.php',
+			   data: { listcities : 'listcities'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listcities').html(data);	
+			   }
+			 });
+			});
+		//--------------------------------------------------------------------------------------
+			
+	</script>
+	<!-- /custom jquery for ajax requests -->
+	
 	<!-- jquery.inputmask -->
     <script>
       $(document).ready(function() {

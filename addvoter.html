@@ -66,6 +66,11 @@
 			width:70%;
 			
 		}
+		.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
 	</style>
   </head>
 
@@ -324,6 +329,10 @@
             <div class="page-title">
               <div class="title_left">
                 <h3>Manage Voters</h3>
+				</br>
+				<div class="notification" id="notif">
+				
+				</div>
               </div>
 
               <div class="title_right">
@@ -365,12 +374,14 @@
 				  
 				  <div class="x_content">
                     <br>
-                    <form class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left" id="addVoterForm">
 
+						<input type="hidden" name="action" value="addvoter" />
+						
 						<div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Enter CNIC</label>
                         <div class="col-md-9 col-sm-9 col-xs-9">
-                          <input type="text" class="form-control" data-inputmask="'mask': '99999-9999999-9'" required>
+                          <input type="text" class="form-control" name="cnic" data-inputmask="'mask': '99999-9999999-9'" required>
                           <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
@@ -379,7 +390,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Name</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Enter your name" required>
+                          <input type="text" class="form-control" name="name" placeholder="Enter your name" required>
                         </div>
                       </div>
 					  
@@ -393,12 +404,12 @@
                           
                           <div class="radio">
                             <label>
-                              <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="gender" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> MALE
+                              <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="gender" value="m" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> MALE
                             </label>
                           </div>
                           <div class="radio">
                             <label>
-                              <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="gender" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> FEMALE
+                              <div class="iradio_flat-green" style="position: relative;"><input type="radio" class="flat" name="gender" vlaue="f" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> FEMALE
                             </label>
                           </div>
                         </div>
@@ -407,14 +418,14 @@
 					  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Address</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Enter your address" required>
+                          <input type="text" class="form-control" name="address" placeholder="Enter your address" required>
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-3">Enter Mobile Number</label>
                         <div class="col-md-9 col-sm-9 col-xs-9">
-                          <input type="text" class="form-control" data-inputmask="'mask': '9999-9999999'" required>
+                          <input type="text" class="form-control" name="mobile" data-inputmask="'mask': '9999-9999999'" required>
                           <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
                         </div>
                       </div>
@@ -422,13 +433,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select City</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control">
-                            <option>Choose City</option>
-                            <option>Karachi</option>
-                            <option>Islamabad</option>
-                            <option>Lahore</option>
-                            <option>Quetta</option>
-							<option>Peshawar</option>
+                          <select class="form-control" name="cityID" id="listcities">
+                            <!-- data from DB -->
                           </select>
                         </div>
                       </div>
@@ -475,31 +481,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Town</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="select2_group form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                            <optgroup label="Karachi">
-                              <option value="AK">North Karachi</option>
-                              <option value="HI">Mehmoodabad</option>
-                            </optgroup>
-                            <optgroup label="Islamabad">
-                              <option value="CA">RedZone</option>
-                              <option value="NV">D-8</option>
-                             
-                            </optgroup>
-                            <optgroup label="Lahore">
-                              <option value="AZ">Raiwand</option>
-                              <option value="CO">Jamshed Town</option>
-                              
-                            </optgroup>
-                            <optgroup label="Peshawar">
-                              <option value="AL">D5 Town</option>
-                              <option value="AR">Al-Naas Town</option>
-                              
-                            </optgroup>
-                            <optgroup label="Quetta">
-                              <option value="CT">Moiz Town</option>
-                              <option value="DE">AMK Town</option>
-                              
-                            </optgroup>
+                          <select class="select2_group form-control select2-hidden-accessible" id="listtown" name="townid" tabindex="-1" aria-hidden="true">
+                            
                           </select>
                         </div>
                       </div>
@@ -553,6 +536,73 @@
 	<!-- jquery.inputmask -->
     <script src="vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     
+	<!-- custom jquery for ajax requests -->
+	
+	
+	<script>
+		
+		//------------------------------------------------------------------------------------
+		//AddVoterScript
+		
+		$("#addVoterForm").submit(function(e) {
+
+		var url = "scripts/voter.php"; // the script we handle the form input.
+
+		$.ajax({
+			   type: "POST",
+			   url: url,
+			   data: $("#addVoterForm").serialize(), // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#notif').text(data);	
+					$('#notif').show().delay(2000).fadeOut();
+			   }
+			 });
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+			});
+			
+			function getTown(cityid){
+			//get constituencies of selected city
+			$('#listtown').html('');
+				$.ajax({
+				   type: "POST",
+				   url: 'scripts/town.php',
+				   data: { listtown : 'listtown', cid : cityid}, 
+				   success: function(data)
+				   {
+						$('#listtown').html(data);	
+						
+				   }
+				 });
+			}
+			
+		$( document ).ready(function() {
+				
+				$.ajax({
+				   type: "POST",
+				   url: 'scripts/city.php',
+				   data: { listcities : 'listcities'}, // serializes the form's elements.
+				   success: function(data)
+				   {
+						$('#listcities').html(data);	
+				   }
+			 });
+		
+				$('#listcities').change(function(){
+					getTown($(this).val());
+					console.log($(this).val());
+				});
+			});
+			
+		
+		//--------------------------------------------------------------------------------------
+			
+	</script>
+	<!-- /custom jquery for ajax requests -->
+	
+	
+	
 	<!-- jquery.inputmask -->
     <script>
       $(document).ready(function() {

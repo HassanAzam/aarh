@@ -394,7 +394,7 @@
 					  
 					  <div class="row">
 						<div class="col-xs-12 col-md-3 dcard" style="background-color:#30A5FF;">
-							<h3>150k</h3>
+							<h3 id="totalVoters">150k</h3>
 							<div class="dcarddiv">
 								<h4>Voters</h4>
 								<img src="images/icons/voter.png" alt="cities" />
@@ -452,6 +452,28 @@
     <!-- NProgress -->
     <script src="vendors/nprogress/nprogress.js"></script>
     
+	<!-- Custom AJAX request jquery code -->
+	
+		<script>
+			
+			$( document ).ready(function() {
+				
+					$.ajax({
+					   type: "POST",
+					   url: 'scripts/voter.php',
+					   data: {countvoter : 'countvoter'},		//sending 'countvoter' token so that php know what to do
+					   success: function(data)
+					   {
+							$('#totalVoters').text(data);
+					   }
+					});
+				
+			});
+			
+		</script>
+	
+	<!-- Custom AJAX request jquery code -->
+
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
   </body>
