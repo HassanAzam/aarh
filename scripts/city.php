@@ -88,6 +88,8 @@ if ($_POST['listcities']=="listcities") {
 				$result .= $row['city_Name'];
 				$result .= "</option>";
 			}
+			<option>Select City</option>
+			<option value='city_ID'>Name here</option>
 			
 		} 
 		else {
