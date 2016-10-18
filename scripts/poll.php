@@ -17,20 +17,22 @@ $result = '';
 
 // Confirm that it's add town request
 if (isset($_POST['action'])) {
-if ($_POST['action']=="addtown") {
+if ($_POST['action']=="addpoll") {
 	
 	// getting incoming data via post
 	// real_escape_string cleans the string from special characters
 	
-	$name = $mysqli->real_escape_string($_POST['townname']);
-	$cityid = $_POST['cityid'];
-	$constid = $_POST['constid'];
+	$pname = $mysqli->real_escape_string($_POST['pollname']);
+//	$pollid = $_POST['pollid'];
+	$townid = $_POST['townid'];
 	
 	//preparing query
-	$q = $mysqli->prepare("INSERT INTO town (town_Name,city_ID,const_ID) VALUES (?, ?, ?)");
+	$q = $mysqli->prepare("INSERT INTO pollingstation (poll_Name,town_ID) VALUES (?, ?)");
+	
 	
 	//binding params - for strict checking of the type of incoming data 's' for string 'i' for integer
-	$q->bind_param("sii", $name, $cityid, $constid);
+	$q->bind_param("si", $pname, $townid);
+	
 	
 	//execute query
 	$q->execute();
@@ -38,46 +40,23 @@ if ($_POST['action']=="addtown") {
 	//close query connection_aborted
 	$q->close();
 	
-	$result = "Town added Successfully!";
+	$result = "Polling Station added Successfully!";
 }
 }
 //*** Add town Code Ends
 //-----------------------------------------------------------------------------------
 
 
-//*** Count total num of town
+//*** return all of Towns
 //-----------------------------------------------------------------------------------
 
-// Confirm that it's count cities request
-if(isset($_POST['counttown'])) {
-if ($_POST['counttown']=="counttown") {
+
+
+if(isset($_POST['listalltowns'])) {
+if ($_POST['listalltowns']=="listalltowns") {
 	
 	//preparing query
-	$q = "SELECT COUNT(*) FROM town";		//return total num of rows in town table
-	
-	$r = $mysqli->query($q); //executing query
-	
-	$count = $r->fetch_row();
-	
-	$result = $count[0];
-	
-}
-}
-//*** Count Towns Code Ends
-//-----------------------------------------------------------------------------------
-
-
-//*** return list of Towns
-//-----------------------------------------------------------------------------------
-
-// Confirm that it's list cities request
-if(isset($_POST['listtown'])) {
-if ($_POST['listtown']=="listtown") {
-	
-	$cityid = $_POST['cid'];
-	
-	//preparing query
-	$q = "SELECT * FROM town WHERE city_ID='$cityid'";		//return name,id of all cities in DB
+	$q = "SELECT * FROM town";		//return name,id of all cities in DB
 	
 	$r = $mysqli->query($q); //executing query
 	
@@ -92,7 +71,6 @@ if ($_POST['listtown']=="listtown") {
 				$result .= $row['town_Name'];
 				$result .= "</option>";
 			}
-			
 		} 
 		else {
 			$result = "No town in DB";
@@ -102,8 +80,6 @@ if ($_POST['listtown']=="listtown") {
 	
 }
 }
-//*** List town Ends
-
 
 //-----------------------------------------------------------------------------------
 

@@ -365,53 +365,30 @@
 				  
 				  <div class="x_content">
                     <br>
-                    <form class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left" id="addPollForm">
 
 						
-					
+					<input type="hidden" name="action" value="addpoll"/>
 					
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Polling Station Name</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Boys College" required>
+                          <input type="text" class="form-control" name="pollname" placeholder="Boys College" required>
                         </div>
                       </div>
 					  
-					  <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Polling Station Address</label>
+					  <!-- <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Polling ID</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Near NED University" required>
+                          <input type="text" class="form-control" name="pollid" placeholder="Near NED University" required>
                         </div>
-                      </div>
+                      </div> -->
 					  
 					  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Town</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="select2_group form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                            <optgroup label="Karachi">
-                              <option value="AK">North Karachi</option>
-                              <option value="HI">Mehmoodabad</option>
-                            </optgroup>
-                            <optgroup label="Islamabad">
-                              <option value="CA">RedZone</option>
-                              <option value="NV">D-8</option>
-                             
-                            </optgroup>
-                            <optgroup label="Lahore">
-                              <option value="AZ">Raiwand</option>
-                              <option value="CO">Jamshed Town</option>
-                              
-                            </optgroup>
-                            <optgroup label="Peshawar">
-                              <option value="AL">D5 Town</option>
-                              <option value="AR">Al-Naas Town</option>
-                              
-                            </optgroup>
-                            <optgroup label="Quetta">
-                              <option value="CT">Moiz Town</option>
-                              <option value="DE">AMK Town</option>
-                              
-                            </optgroup>
+                          <select class="form-control" id="listalltowns" name="townid" required>
+                            
                           </select>
                         </div>
                       </div>
@@ -463,12 +440,56 @@
     
 	<!-- jquery.inputmask -->
     <script>
+      //------------------------------------------------------------------------------------
+		//AddPollScript
+		
+		$("#addPollForm").submit(function(e) {
+			console.log("shdhsdh");
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/poll.php',
+			   data: $('#addPollForm').serialize(), // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#notif').text(data);	
+					$('#notif').show().delay(2000).fadeOut();
+					alert(data);
+			   }
+			 });
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+			});
+			
+		$( document ).ready(function() {
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/poll.php',
+			   data: { listalltowns : 'listalltowns'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listalltowns').html(data);	
+			   }
+			 });
+			});
+			
+			
+		$( document ).ready(function() {
+				$('#listalltowns').change(function(){
+					//getConst($(this).val());
+					console.log($(this).val());
+				});
+			});
+			
+		
+		//--------------------------------------------------------------------------------------
+
+    </script>
+    <!-- /jquery.inputmask -->
+	    <script>
       $(document).ready(function() {
         $(":input").inputmask();
       });
     </script>
-    <!-- /jquery.inputmask -->
-	
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
   </body>

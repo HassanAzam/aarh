@@ -15,7 +15,7 @@ $result = '';
 //*** Add City Code
 //-----------------------------------------------------------------------------------
 
-// Confirm that it's add voter request
+// Confirm that it's add city request
 if (isset($_POST['action'])) {
 if ($_POST['action']=="addcity") {
 	
@@ -88,6 +88,8 @@ if ($_POST['listcities']=="listcities") {
 				$result .= $row['city_Name'];
 				$result .= "</option>";
 			}
+			<option>Select City</option>
+			<option value='city_ID'>Name here</option>
 			
 		} 
 		else {
