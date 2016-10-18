@@ -365,30 +365,30 @@
 				  
 				  <div class="x_content">
                     <br>
-                    <form class="form-horizontal form-label-left">
+                    <form class="form-horizontal form-label-left" id="addPollForm">
 
 						
-					
+					<input type="hidden" name="action" value="addpoll"/>
 					
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Polling Station Name</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Boys College" required>
+                          <input type="text" class="form-control" name="pollname" placeholder="Boys College" required>
                         </div>
                       </div>
 					  
 					  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter Polling Station Address</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Near NED University" required>
+                          <input type="text" class="form-control" name="polladdress" placeholder="Near NED University" required>
                         </div>
                       </div>
 					  
 					  <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Town</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="select2_group form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                         
+                          <select class="form-control" id="listalltowns" name="townid" required>
+                            
                           </select>
                         </div>
                       </div>
@@ -440,9 +440,47 @@
     
 	<!-- jquery.inputmask -->
     <script>
-      $(document).ready(function() {
-        $(":input").inputmask();
-      });
+      //------------------------------------------------------------------------------------
+		//AddPollScript
+		
+		$("#addPollForm").submit(function(e) {
+
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/town.php',
+			   data: $("#addPollForm").serialize(), // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#notif').text(data);	
+					$('#notif').show().delay(2000).fadeOut();
+			   }
+			 });
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+			});
+			
+		$( document ).ready(function() {
+		$.ajax({
+			   type: "POST",
+			   url: 'scripts/town.php',
+			   data: { listalltowns : 'listalltowns'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listalltowns').html(data);	
+			   }
+			 });
+			});
+			
+		$( document ).ready(function() {
+				$('#listalltowns').change(function(){
+					getConst($(this).val());
+					console.log($(this).val());
+				});
+			});
+			
+		
+		//--------------------------------------------------------------------------------------
+
     </script>
     <!-- /jquery.inputmask -->
 	

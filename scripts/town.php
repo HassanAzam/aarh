@@ -103,6 +103,38 @@ if ($_POST['listtown']=="listtown") {
 }
 }
 //*** List town Ends
+
+
+if(isset($_POST['listalltowns'])) {
+if ($_POST['listalltowns']=="listalltowns") {
+	
+	
+	//preparing query
+	$q = "SELECT * FROM town";		//return name,id of all cities in DB
+	
+	$r = $mysqli->query($q); //executing query
+	
+		if ($r->num_rows > 0) {
+			// output data of each row
+			
+			$result = '<option>Select Town</option>';
+			while($row = $r->fetch_assoc()) {
+				$result .= "<option value='";
+				$result .= $row['town_ID'];
+				$result .= "'>";
+				$result .= $row['town_Name'];
+				$result .= "</option>";
+			}
+		} 
+		else {
+			$result = "No town in DB";
+		}
+	
+	
+	
+}
+}
+
 //-----------------------------------------------------------------------------------
 
 // Return result
