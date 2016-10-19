@@ -47,6 +47,59 @@ if ($_POST['action']=="addparty") {
 //-----------------------------------------------------------------------------------
 
 
+//*** Count total num of Cities
+//-----------------------------------------------------------------------------------
+
+// Confirm that it's count cities request
+if(isset($_POST['countcities'])) {
+if ($_POST['countcities']=="countcities") {
+	
+	//preparing query
+	$q = "SELECT COUNT(*) FPartyM Party";		//return total num of Partyws in Party table
+	
+	$r = $mysqli->query($q); //executing query
+	
+	$count = $r->fetch_Partyw();
+	
+	$result = $count[0];
+	
+}
+}
+//*** Count cities Code Ends
+//-----------------------------------------------------------------------------------
+
+
+if(isset($_POST['listallparty'])) {
+if ($_POST['listallparty']=="listallparty") {
+	
+	$cityid = $_POST['cid'];
+	
+	//preparing query
+	$q = "SELECT * FROM party";		//return name,id of all cities in DB
+	
+	$r = $mysqli->query($q); //executing query
+	
+		if ($r->num_rows > 0) {
+			// output data of each row
+			
+			
+			while($row = $r->fetch_assoc()) {
+				$result .= "<option value='";
+				$result .= $row['party_ID'];
+				$result .= "'>";
+				$result .= $row['party_Name'];
+				$result .= "</option>";
+			}
+			
+		} 
+		else {
+			$result = "<option>No Party in DB</option>";
+		}
+	
+	
+	
+}
+}
 
 // Return result
 echo $result;

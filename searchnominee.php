@@ -15,11 +15,14 @@
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
-	<!-- iCheck -->
-    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-	<!-- Switchery -->
-    <link href="vendors/switchery/dist/switchery.min.css" rel="stylesheet">
 
+	<!-- Datatables -->
+    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+	
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
 	
@@ -66,13 +69,26 @@
 			width:70%;
 			
 		}
-		.notification
-		{
-			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
-			display:none;
-		}
 	</style>
   </head>
+  
+  <?php
+  require('scripts/connection.php');
+		// Confirm that it's add voter request
+	
+	//preparing query
+	$q = "SELECT N.nominee_ID,V.CNIC, V.voter_Name, C.const_Name, P.party_Name
+		  FROM nominee N,
+			   voter V,
+               constituency C,
+			   party P
+		  WHERE N.CNIC = V.CNIC AND
+		  N.const_ID = C.const_ID AND
+		  N.party_ID = P.party_ID";
+	
+	$r = $mysqli->query($q); //executing query
+
+  ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -328,9 +344,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Manage Nominees</h3>
-				<div class="notification" id="notif">
-				</div>
+                <h3>Manage Voters</h3>
               </div>
 
               <div class="title_right">
@@ -348,11 +362,10 @@
             <div class="clearfix"></div>
 
             <div class="row">
-
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Add Nominee </h2>
+                    <h2>Search Voters</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -370,96 +383,66 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+				  <!-- Content -->
                   <div class="x_content">
-
-
-                    <!-- Smart Wizard -->
-                    <p>Process to Select Nominee</p>
-                    <div id="wizard" class="form_wizard wizard_horizontal">
-                      <ul class="wizard_steps">
-                        <li>
-                          <a href="#step-1">
-                            <span class="step_no">1</span>
-                            <span class="step_descr">
-                                              Step 1<br />
-                                              <small>Select person by entering CNIC</small>
-                                          </span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-2">
-                            <span class="step_no">2</span>
-                            <span class="step_descr">
-                                              Step 2<br />
-                                              <small>Choose Party</small>
-                                          </span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-3">
-                            <span class="step_no">3</span>
-                            <span class="step_descr">
-                                              Step 3<br />
-                                              <small>Assign Constituency</small>
-                                          </span>
-                          </a>
-                        </li>
-                        
-                      </ul>
-                      <div id="step-1" style="overflow:hidden;">
-                        <form class="form-horizontal form-label-left">
-							</br></br>
-                          <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-3">Enter CNIC</label>
-                        <div class="col-md-6 col-sm-6 col-xs-9">
-                          <input type="text" class="form-control" id="cnic" data-inputmask="'mask': '99999-9999999-9'" required>
-                          <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
-                        </div>
-                      </div>
-					  
-					  			  
-					  
-                        </form>
-
-                      </div>
-                      <div id="step-2" style="overflow:hidden;">
-                        
-						<h2>Choose Party</h2>
+                      
+					  <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
 						
-						<div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Party</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="form-control" name="partyid" id="listparty">
-                            
-                          </select>
-                        </div>
-                      </div>
-						
-                      </div>
-					  
-                      <div id="step-3">
-                        <form class="form-horizontal form-label-left">
-							</br></br>
+                    </p>
+                    <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                      <thead>
+                        <tr>
+                          <th><input type="checkbox" id="check-all" class="flat"></th>
+                          <th>CNIC</th>
+                          <th>Voter Name</th>
+                          <th>Gender</th>
+                          <th>Address</th>
+                          <th>Mobile Number</th>
                           
-						  <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Constituency</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="form-control" name="constid" id="listconst">
-                           
-                          </select>
-                        </div>
-                      </div>
-					  
-					  
-                    </form>
-                      </div>
-                     
+                        </tr>
+                      </thead>
 
-                    </div>
-                    <!-- End SmartWizard Content -->
 
+                      <tbody id="searchresults">
+                        
+                        
+						<?php
+						
+								if ($r->num_rows > 0) {
+								// output data of each row
+								
+								
+									while($row = $r->fetch_assoc()) {
+										echo "<tr>
+												  <td><input type='checkbox' class='flat' name='table_records'></td>
+												  <td>".$row['nominee_ID']."</td>
+												  <td>".$row['CNIC']."</td>
+												  <td>".$row['voter_Name']."</td>
+												  <td>".$row['const_Name']."</td>
+												  <td>".$row['party_Name']."</td>
+												  
+												</tr>";
+									}
+								
+								} 
+								else {
+									echo "No Cities in DB";
+								}
+						
+						?>
+						
+                      </tbody>
+                    </table>
                   </div>
-				  
+                </div>
+              </div>
+					  
+                  </div>
+				  <!-- /Content --> 
                 </div>
               </div>
             </div>
@@ -488,90 +471,120 @@
     <script src="vendors/nprogress/nprogress.js"></script>
 	<!-- iCheck -->
     <script src="vendors/iCheck/icheck.min.js"></script>
-	<script src="vendors/switchery/dist/switchery.min.js"></script>
-	<!-- jquery.inputmask -->
-    <script src="vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- jQuery Smart Wizard -->
-    <script src="vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
 	
+	<!-- Datatables -->
+    <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+    <script src="vendors/jszip/dist/jszip.min.js"></script>
+    <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 	
-	
-	<!-- jquery.inputmask -->
+	<!-- Datatables -->
     <script>
       $(document).ready(function() {
-        $(":input").inputmask();
-		
-		$.ajax({
-			   type: "POST",
-			   url: 'scripts/const.php',
-			   data: { listallconst : 'listallconst'}, // serializes the form's elements.
-			   success: function(data)
-			   {
-					$('#listconst').html(data);	
-			   }
-			 });
-			 
-		$.ajax({
-			   type: "POST",
-			   url: 'scripts/party.php',
-			   data: { listallparty : 'listallparty'}, // serializes the form's elements.
-			   success: function(data)
-			   {
-					$('#listparty').html(data);	
-					alert(data);
-			   }
-			 });
-		
-		
-		
-		
-      });
-    </script>
-    <!-- /jquery.inputmask -->
-	
-	<!-- jQuery Smart Wizard -->
-    <script>
-      $(document).ready(function() {
-        $('#wizard').smartWizard();
+        var handleDataTableButtons = function() {
+          if ($("#datatable-buttons").length) {
+            $("#datatable-buttons").DataTable({
+              dom: "Bfrtip",
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "csv",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "excel",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "pdfHtml5",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true
+            });
+          }
+        };
 
-        $('#wizard_verticle').smartWizard({
-          transitionEffect: 'slide'
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        $('#datatable').dataTable();
+
+        $('#datatable-keytable').DataTable({
+          keys: true
         });
 
-        $('.buttonNext').addClass('btn btn-success');
-        $('.buttonPrevious').addClass('btn btn-primary');
-        $('.buttonFinish').addClass('btn btn-default');
-		$('.buttonFinish').attr('id','finish');
+        $('#datatable-responsive').DataTable();
 
-		
-		
-		
-		$('#finish').click(function(){
-			var cnic = $('#cnic').val();
-			var partyid = $('#listparty').val();
-			var constid = $('#listconst').val();
-			console.log(cnic);
-			console.log(partyid);
-			console.log(constid);
-			$.ajax({
-				   type: "POST",
-				   url: 'scripts/nominee.php',
-				   data: {action : 'addnominee', cnic: cnic, partyid:partyid, constid : constid}, 
-				   success: function(data)
-				   {
-						$('#notif').text(data);
-						$('#notif').show().delay(2000).fadeOut();
-						
-				   }
-				 });
-			});
-		
+        $('#datatable-scroller').DataTable({
+          ajax: "js/datatables/json/scroller-demo.json",
+          deferRender: true,
+          scrollY: 380,
+          scrollCollapse: true,
+          scroller: true
+        });
 
+        $('#datatable-fixed-header').DataTable({
+          fixedHeader: true
+        });
+
+        var $datatable = $('#datatable-checkbox');
+
+        $datatable.dataTable({
+          'order': [[ 1, 'asc' ]],
+          'columnDefs': [
+            { orderable: false, targets: [0] }
+          ]
+        });
+        $datatable.on('draw.dt', function() {
+          $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-green'
+          });
+        });
+
+        TableManageButtons.init();
       });
 	  
+	  /*$( document ).ready(function() {
+				
+				$.ajax({
+				   type: "POST",
+				   url: 'scripts/voter.php',
+				   data: { action : 'listallvoters'}, 
+				   success: function(data)
+				   {
+						$('#searchresults').html(data);	
+						console.log("sdsdsd");
+				   }
+			 });
+		});*/
     </script>
-    <!-- /jQuery Smart Wizard -->
-	
+    <!-- /Datatables -->
+    
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
   </body>
