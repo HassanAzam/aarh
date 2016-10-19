@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2016 at 03:49 PM
+-- Generation Time: Oct 19, 2016 at 02:28 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -93,17 +93,14 @@ CREATE TABLE IF NOT EXISTS `nominee` (
   PRIMARY KEY (`nominee_ID`),
   UNIQUE KEY `CNIC` (`CNIC`),
   UNIQUE KEY `party_ID` (`party_ID`,`const_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `nominee`
 --
 
 INSERT INTO `nominee` (`nominee_ID`, `CNIC`, `party_ID`, `const_ID`) VALUES
-(1, '4210139788499', 2, 3),
-(2, '42101', 5, 3),
-(4, '4210155', 2, 4),
-(6, '42101554', 1, 4);
+(12, '42101-3978849-9', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -116,7 +113,14 @@ CREATE TABLE IF NOT EXISTS `party` (
   `party_Name` varchar(255) NOT NULL,
   `party_Flag` varchar(255) NOT NULL,
   PRIMARY KEY (`party_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `party`
+--
+
+INSERT INTO `party` (`party_ID`, `party_Name`, `party_Flag`) VALUES
+(1, 'PTI', 'upload/cache.png');
 
 -- --------------------------------------------------------
 
@@ -130,7 +134,15 @@ CREATE TABLE IF NOT EXISTS `pollingstation` (
   `town_ID` int(11) NOT NULL,
   PRIMARY KEY (`poll_ID`),
   UNIQUE KEY `town_ID` (`town_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `pollingstation`
+--
+
+INSERT INTO `pollingstation` (`poll_ID`, `poll_Name`, `town_ID`) VALUES
+(1, 'tesd', 13),
+(2, 'Test', 16);
 
 -- --------------------------------------------------------
 
@@ -142,9 +154,18 @@ CREATE TABLE IF NOT EXISTS `ro` (
   `ro_ID` int(11) NOT NULL AUTO_INCREMENT,
   `CNIC` varchar(30) NOT NULL,
   `poll_ID` int(11) NOT NULL,
+  `proctoringKey` varchar(30) NOT NULL,
   PRIMARY KEY (`ro_ID`),
-  UNIQUE KEY `CNIC` (`CNIC`,`poll_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `CNIC` (`CNIC`,`poll_ID`),
+  UNIQUE KEY `proctoringKey` (`proctoringKey`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ro`
+--
+
+INSERT INTO `ro` (`ro_ID`, `CNIC`, `poll_ID`, `proctoringKey`) VALUES
+(1, '42101-0012547-8', 2, 'moiz');
 
 -- --------------------------------------------------------
 
