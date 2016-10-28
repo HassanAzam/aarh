@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="scripts/image-picker.css">
+  
+  <style>
+	.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
+  </style>
+</head>
+ 
+ 
+
+
+<body>
+
+
+
+<div id="wrapper">
+       
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu" >
+
+                    <li>
+                        <a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="active-menu" href="votingarea.html"><i class="fa fa-desktop"></i> Voting Area</a>
+                    </li>
+					<li>
+                        <a href="chart.html"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
+                    </li>
+                    <!-- <li>
+                        <a href="tab-panel.html"><i class="fa fa-qrcode"></i> Tabs &amp; Panels</a>
+                    </li>
+                    
+                    <li>
+                        <a href="table.html"><i class="fa fa-table"></i> Responsive Tables</a>
+                    </li> -->
+                    <li>
+                        <a href="form.html"><i class="fa fa-edit"></i>Submit Results</a>
+                    </li>
+
+
+                    <!-- <li>
+                        <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="first.html">Second Level Link</a>
+                            </li>
+                            <li>
+                                <a href="second.html">Second Level Link</a>
+                            </li>
+                            <li>
+                                <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level collapse">
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li> -->
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            Dashboard <small>Summary of this Polling Station</small>
+                        </h1>
+                    </div>
+                </div>
+                
+				
+				<!-- First Row -->
+	<div class="row">
+	
+								<!-- First Block  -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-brown">
+				<div class="panel-body">
+					<i class="fa fa-users fa-5x"></i>
+					<h3>Mr. Muzzamil</h3>
+				</div>
+					<div class="panel-footer back-footer-brown">Name of Returning Officer</div>
+			</div>
+		</div>
+								<!-- First Block -->
+								
+								
+								<!-- Second Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-blue">
+				<div class="panel-body">
+					<i class="fa fa-expeditedssl fa-5x"></i>
+					<h3>13213 </h3>
+				</div>
+				<div class="panel-footer back-footer-blue">ID of R.O.</div>
+			</div>
+		</div>
+								<!-- Second Block -->
+								
+								
+								<!-- Third Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-red">
+				<div class="panel-body">
+					<i class="fa fa fa-foursquare fa-5x"></i>
+					<h3>Govt. School of Nazimabad</h3>
+				</div>
+				<div class="panel-footer back-footer-red">Name of Polling Station</div>
+			</div>
+		</div>
+								<!-- Third Block -->
+								
+								
+								<!-- Fourth Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-green">
+				<div class="panel-body">
+					<i class="fa fa-pie-chart fa-5x"></i>
+					<h3>12,630</h3>
+				</div>
+				<div class="panel-footer back-footer-green">Number of votes cast</div>
+			</div>
+			</div>
+								<!-- Fourth Block -->
+			
+		
+	</div>
+								<!-- First Row -->
+								
+								<br><br>
+								
+				<div class="notification" id="notif">
+				
+				</div>
+
+                <br><br>
+								
+				<form action="">
+  Enter CNIC:<br>
+  <input type="text" name="firstname" value="" required>
+  <br>
+  Enter Party ID:<br>
+  <input type="text" name="lastname" placeholder="PPP - 01, AAA - 02, BBB - 03" required>
+  <br>
+  Enter Nominee ID:<br>
+  <input type="text" name="lastname" placeholder="Ali - 22, Tahir - 33, Hamza - 55" required>
+  <br>
+  <button id="lala">Submit</button>
+</form>
+				
+				<br><br>
+				
+				
+								
+				
+                        <!-- <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Party</label>
+                        
+                          <select id="listallparty" name="partyid" required>
+           
+                          </select> -->
+                        
+                  
+				</br></br></br></br>				
+								
+				<select class="image-picker show-html" id="partyflags">
+				  <!--<option data-img-src="../scripts/upload/ppp.jpg" data-img-class="first" data-img-alt="Page 1" value="1">  Page 1  </option>
+				  <option data-img-src="img/02.png" data-img-alt="Page 2" value="2">  Page 2  </option>
+				  <option data-img-src="img/03.png" data-img-alt="Page 3" value="3">  Page 3  </option>
+				  <option data-img-src="img/04.png" data-img-alt="Page 4" value="4">  Page 4  </option>
+				  
+				  <option data-img-src="img/12.png" data-img-alt="Page 12" data-img-class="last" value="12"> Page 12 </option>-->
+				</select>
+                
+				<footer><p>All right reserved to AARH <a href="#">Online Voting System</a></p></footer>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+
+
+								
+								
+								
+								<!-- Custom Scripts -->
+								
+								<script src="scripts/jquery-1.10.2.js"></script>
+								<script src="scripts/bootstrap.min.js"></script>
+								<script src="scripts/jquery.metisMenu.js"></script>
+								<script src="scripts/morris/raphael-2.1.0.min.js"></script>
+								<script src="scripts/morris/morris.js"></script>
+								<script src="scripts/custom-scripts.js"></script>
+								<script src="scripts/image-picker.min.js"></script>
+								
+								<script>
+									
+									var flag;
+								
+									$("select").imagepicker();
+									
+									$(document).ready(function(){
+									$('#lala').click(function(){alert("Your Cas been NIC has been verifed and vote has been added");});
+									
+										$.ajax({
+			   type: "POST",
+			   url: '../scripts/party.php',
+			   data: { listallparty : 'listallparty'}, 
+			   success: function(data)
+			   {
+					$('#listallparty').html(data);	
+					
+			   }
+			 });
+									
+										$('#entercnic').click(function(){
+										var cnic = $('#cnic').val();
+										
+											$.ajax({
+											
+											   type: "POST",
+											   url: '../scripts/voter.php',
+											   data: { action : 'cnicexist', cnic : cnic}, // serializes the form's elements.
+											   success: function(data)
+											   {
+														alert(data);
+														
+											   }
+											});
+											
+										});
+										
+									$( document ).ready(function() {
+				$('#listallparty').change(function(){
+					//getConst($(this).val());
+					console.log($(this).val());
+				});
+			});
+			});
+			
+		
+		//--------------------------------------------------------------------------------------
+
+    </script>
+    <!-- /jquery.inputmask -->
+	    <script>
+      $(document).ready(function() {
+        $(":input").inputmask();
+      });
+    </script>
+			
+			
+										
+										
+									
+								</script>
+								
+								<!-- Custom Scripts -->
+
+</body>
+</html>
+
+
+                
+            </div>
