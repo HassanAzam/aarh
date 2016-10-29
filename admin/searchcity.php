@@ -77,27 +77,20 @@
 		// Confirm that it's add voter request
 	
 	//preparing query
-	$q = "SELECT N.nominee_ID,V.CNIC, V.voter_Name, C.const_Name, P.party_Name
-		  FROM nominee N,
-			   voter V,
-               constituency C,
-			   party P
-		  WHERE N.CNIC = V.CNIC AND
-		  N.const_ID = C.const_ID AND
-		  N.party_ID = P.party_ID";
+	$q = "SELECT * FROM city";	
 	
 	$r = $mysqli->query($q); //executing query
 
   ?>
 
-<?php  require('sidenav.php'); ?>
+  <?php  require('sidenav.php'); ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Manage Nominees</h3>
+                <h3>Manage Cities</h3>
               </div>
 
               <div class="title_right">
@@ -118,7 +111,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Search Nominees</h2>
+                    <h2>Search Cities</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -150,11 +143,8 @@
                       <thead>
                         <tr>
                           <th><input type="checkbox" id="check-all" class="flat"></th>
-                          <th>Nominee ID</th>
-                          <th>CNIC</th>
-                          <th>Name</th>
-                          <th>Constituency</th>
-                          <th>Party</th>
+                          <th>City ID</th>
+                          <th>City Name</th>
                           
                         </tr>
                       </thead>
@@ -172,13 +162,10 @@
 									while($row = $r->fetch_assoc()) {
 										echo "<tr>
 												  <td><input type='checkbox' class='flat' name='table_records'></td>
-												  <td>".$row['nominee_ID']."</td>
-												  <td>".$row['CNIC']."</td>
-												  <td>".$row['voter_Name']."</td>
-												  <td>".$row['const_Name']."</td>
-												  <td>".$row['party_Name']."</td>
+												  <td>".$row['city_ID']."</td>
+												  <td>".$row['city_Name']."</td>
 												  
-												</tr>";
+											</tr>";
 									}
 								
 								} 

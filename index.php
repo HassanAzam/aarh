@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 	<head>
@@ -31,7 +32,7 @@
 				  z-index: 1;
 				  background: #FFFFFF;
 				  max-width: 360px;
-				  margin: 0 auto 100px;
+				  margin: 0 auto 30px;
 				  padding: 45px;
 				  text-align: center;
 				  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -87,10 +88,58 @@
 				padding-top:20px;
 			}
 			
+			.m{
+				  font-family: "Roboto", sans-serif;
+				  text-transform: uppercase;
+				  outline: 0;
+				  background: red;
+				  text-align:left;
+				  border: 0;
+				  padding: 15px;
+				  color: #FFFFFF;
+				  font-size: 14px;
+				  -webkit-transition: all 0.3 ease;
+				  transition: all 0.3 ease;
+				  cursor: pointer;
+				}
+			
 		</style>
 	</head>
 	
+	<?php
+	
+	require('admin/scripts/connection.php');
+	session_start();
+
+	
+	$msg = "";
+	$m = false;
+	
+	if(isset($_POST['submit']))
+	{
+		if(isset($_POST['cnic']) && isset($_POST['pkey']))
+		{
+				$cnic = $_POST['cnic'];
+				$pkey = $_POST['pkey'];
+				
+				//Validating CNIC and key from database
+				
+				
+		}
+		
+		/*else
+		{
+			$msg = "Error";
+			$m = true;
+		}*/
+		
+	}
+		  
+    ?>
+	
 	<body class="bg">
+	
+	
 	
 		<div class="sidepanel">
 		
@@ -108,11 +157,20 @@
 			
 			<div class="form">
 				
-				<form class="login-form">
-				  <input type="text" placeholder="Enter CNIC"/>
-				  <input type="password" placeholder="Proctoring Key"/>
-				  <button>login</button>
+				<form class="login-form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+				  <input type="text" placeholder="Enter CNIC" name="cnic" required/>
+				  <input type="password" placeholder="Proctoring Key" name="pkey" required/>
+				  <button type="submit" name="submit">login</button>
 				  <p class="message">Forgot Key? <a href="#">Click Here</a></p>
+				  </br>
+				  
+				  <?php
+				  
+				  if($m == true)
+					echo '<div class="m">'.$msg.'</div>';
+				
+				  ?>
+				  
 				</form>
 			</div>
 			

@@ -77,27 +77,23 @@
 		// Confirm that it's add voter request
 	
 	//preparing query
-	$q = "SELECT N.nominee_ID,V.CNIC, V.voter_Name, C.const_Name, P.party_Name
-		  FROM nominee N,
-			   voter V,
-               constituency C,
-			   party P
-		  WHERE N.CNIC = V.CNIC AND
-		  N.const_ID = C.const_ID AND
-		  N.party_ID = P.party_ID";
+	$q = "SELECT R.ro_ID, R.CNIC, V.voter_Name, P.poll_Name, R.proctoringKey
+		  FROM ro R, voter V, pollingstation P
+		  WHERE R.CNIC = V.CNIC
+		  AND R.poll_ID = P.poll_ID";	
 	
 	$r = $mysqli->query($q); //executing query
 
   ?>
 
-<?php  require('sidenav.php'); ?>
+  <?php  require('sidenav.php'); ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Manage Nominees</h3>
+                <h3>Manage R.O</h3>
               </div>
 
               <div class="title_right">
@@ -118,7 +114,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Search Nominees</h2>
+                    <h2>Search R.O</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -150,12 +146,11 @@
                       <thead>
                         <tr>
                           <th><input type="checkbox" id="check-all" class="flat"></th>
-                          <th>Nominee ID</th>
+                          <th>R.O ID</th>
                           <th>CNIC</th>
-                          <th>Name</th>
-                          <th>Constituency</th>
-                          <th>Party</th>
-                          
+                          <th>R.O Name</th>
+						  <th>Polling Station</th>
+						  <th>Proctoring Key</th>
                         </tr>
                       </thead>
 
@@ -172,18 +167,17 @@
 									while($row = $r->fetch_assoc()) {
 										echo "<tr>
 												  <td><input type='checkbox' class='flat' name='table_records'></td>
-												  <td>".$row['nominee_ID']."</td>
+												  <td>".$row['ro_ID']."</td>
 												  <td>".$row['CNIC']."</td>
 												  <td>".$row['voter_Name']."</td>
-												  <td>".$row['const_Name']."</td>
-												  <td>".$row['party_Name']."</td>
-												  
-												</tr>";
+												  <td>".$row['poll_Name']."</td>
+												  <td>".$row['proctoringKey']."</td>
+											</tr>";
 									}
 								
 								} 
 								else {
-									echo "No Cities in DB";
+									echo "No R.O in DB";
 								}
 						
 						?>
