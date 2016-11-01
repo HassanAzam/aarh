@@ -1,8 +1,54 @@
 <?php
-
+require('../admin/scripts/connection.php');
 session_start();
 	if(isset($_SESSION['valid']))
 	{
+		if($_SESSION['valid']==true)
+		{
+			$cnic = $_SESSION['cnic'];
+			$pkey = $_SESSION['pkey'];
+			
+			//getting data from DB
+			
+			$q = "SELECT R.ro_ID, V.voter_name, P.poll_Name
+			      FROM ro R, voter V, pollingstation P
+				  WHERE R.CNIC = '$cnic'
+				  and   R.CNIC = V.CNIC
+				  and   R.poll_ID = P.poll_ID";
+			$r = $mysqli->query($q);
+			
+			$result = $r->fetch_row();
+			
+			
+			
+			$roid = $result[0];
+			$name = $result[1];
+			$pollname = $result[2];
+			
+			$q1 = "SELECT C.const_Name
+				   FROM constituency C
+				   WHERE const_ID = (SELECT const_ID from town WHERE town_ID = (SELECT town_ID FROM pollingstation WHERE poll_ID = (SELECT poll_ID FROM ro WHERE ro_ID = '$roid') ) )";
+			$r1 = $mysqli->query($q1);
+			
+			$result1 = $r1->fetch_row();
+			$constname = $result1[0];
+			
+			$q2 = "SELECT party_ID
+				   FROM nominee
+				   WHERE const_ID = ( 
+				   SELECT const_ID
+				   FROM constituency
+				   WHERE const_Name =  '$constname' )";
+				   
+			$r2 = $mysqli->query($q2);
+			$j=0;
+			while($r2row=$r2->fetch_assoc())
+			{
+				$party[$j] = $r2row['party_ID'];
+				$j++;
+			}
+			echo '<script>alert('.$party[1].')</script>';
+		}
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,12 +75,30 @@ session_start();
 			display:none;
 		}
 		
-		#startvoting
+		.panel
 		{
 			width:100%;
 			height:500px;
+			
+		}
+		
+		#startvoting
+		{
 			background-color:#333;
 			padding-top:230px;
+			
+		}
+		
+		#validatecnic
+		{
+			background-color:#fff;
+			border:1px solid #333;
+		}
+		
+		#castvote
+		{
+			background-color:#fff;
+			border:1px solid #333;
 		}
 		
 		#v{
@@ -49,6 +113,41 @@ session_start();
 			height:50px;
 			padding:10px;
 		}
+		#vc
+		{
+			background-color:#333;
+			color:#fff;
+			text-align:center;
+			text-transform:uppercase;
+			padding:10px 0 10px 0;
+		}
+		
+		.hidden
+		{
+			display:none;
+		}
+		
+		.image_picker_image {
+			width: 250px;
+			height: 150px !important;
+		}
+   
+		.party{
+			width:60%;
+			padding:10px;
+			margin:20px 20px 10px 20px;
+			float:left;
+		}
+		
+		.constname
+		{
+			background-color:#333;
+			float:right;
+			margin:20px 60px 20px 0;
+			width:300px;
+			height:380px;
+		}
+
 		
   </style>
 </head>
@@ -84,7 +183,7 @@ session_start();
                         <a href="table.html"><i class="fa fa-table"></i> Responsive Tables</a>
                     </li> -->
                     <li>
-                        <a href="form.html"><i class="fa fa-edit"></i>Submit Results</a>
+                        <a href="logout.php"><i class="fa fa-edit"></i>Logout</a>
                     </li>
 
 
@@ -123,13 +222,69 @@ session_start();
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" style="background-color:#fff;">
             <div id="page-inner">
-
-				<div id="startvoting">
-					<div id="v">
-						Start Voting
-					</div>
-                </div>
+				<div class="panel" id="startvoting">
+					
+						<div id="v">
+							Start Voting
+						</div>
+					
+				</div>
 				
+				<div class="panel" id="validatecnic">
+					
+						<div id="vc">
+							Validate CNIC
+						</div>
+						
+					<div style="padding:150px 300px;">
+					<label> Enter your CNIC </br>
+						<input id="cnic" style="width:400px; margin-top:10px;" type="text" class="form-control" name="cnic" data-inputmask="'mask': '99999-9999999-9'" placeholder="Enter CNIC" required>
+					</label>
+					
+					<button style="background-color:#225081; border:none; color:#fff; padding:10px; margin-top:10px;" id="vald">Validate CNIC</button>
+					<img src="processing.gif" style=" width:30px; height:30px;" id="prgif"/>
+					<div id="e" style="margin:10px 0 0 0; padding:8px; background-color:red; color:#fff;"></div>
+					</div>
+					
+				</div>
+				
+				<div class="panel" id="castvote">
+					
+						<div id="vc">
+							Cast your Vote
+						</div>
+						
+					<h3 id="vname" style="color:#225081; padding:5px;"></h3>
+					
+					<div class="party">
+						
+						<select id="selectImage" class="image-picker">
+							<option value=""></option>
+							<?php
+								 for($i=0; $i<sizeof($party); $i++)
+								{
+									$partyid = $party[$i];
+									
+									$query = "SELECT * FROM party where party_ID = '$partyid'";
+									$rq = $mysqli->query($query);
+									$partydata = $rq->fetch_assoc();
+									
+									echo '<option data-img-src="../admin/scripts/'.$partydata['party_Flag'].'" value="'.$partydata['party_ID'].'">'.$partydata['party_Name'].'</option>';
+								} 
+							?>
+							
+    
+						</select>
+						
+					</div>
+					
+					<div class="constname">
+					
+						<div style="color:#fff; font-size:40px; text-align:center;"><?php echo $constname; ?></div>
+					
+					</div>
+					
+				</div>
 				
             </div>
             <!-- /. PAGE INNER  -->
@@ -152,13 +307,31 @@ session_start();
 								<script src="scripts/image-picker.min.js"></script>
 								
 								<script>
+								
+								$(document).ready(function () {
+    $("#selectImage").imagepicker({
+        hide_select: true
+    });
+
+    var $container = $('.image_picker_selector');
+    // initialize
+    $container.imagesLoaded(function () {
+        $container.masonry({
+            columnWidth: 30,
+            itemSelector: '.thumbnail'
+        });
+    });
+});
 									
 									var flag;
 								
 									$("select").imagepicker();
 									
 									$(document).ready(function(){
-									$('#lala').click(function(){alert("Your Cas been NIC has been verifed and vote has been added");});
+										
+									
+										
+									
 									
 										$.ajax({
 			   type: "POST",
@@ -198,6 +371,77 @@ session_start();
 			
 		
 		//--------------------------------------------------------------------------------------
+		
+		
+		//***************************************************************
+		//Script for Panel Switching Effects
+		//***************************************************************
+		
+		$('#validatecnic').hide();
+		$('#e').hide();
+		$('#prgif').hide();
+		$('#castvote').hide();
+		
+		$('#v').click(function(){
+			
+			$('#startvoting').slideToggle(function(){
+				$('#validatecnic').slideDown();
+			});
+			
+		});
+		
+		function getVoterName(cnic)
+		{
+			$("select").imagepicker();
+			$.ajax({
+					   type: "POST",
+					   url: '../admin/scripts/voter.php',
+					   data: { action : 'getvotername', cnic : cnic},
+					   success: function(data)
+					   {
+						   
+						   $('#vname').text('Welcome, ' + data);
+					   }
+				 });
+		}
+		
+		$('#vald').click(function(){
+			
+			
+			
+			var cnic = $('#cnic').val();
+			console.log(cnic=='');
+			if(cnic == ''){
+				$('#e').html('Please provide CNIC number');
+				$('#e').show().delay(2000).fadeOut();
+			}
+			else{
+				$('#prgif').show();
+				$.ajax({
+					   type: "POST",
+					   url: '../admin/scripts/voter.php',
+					   data: { action : 'cnicexist', cnic : cnic}, // serializes the form's elements.
+					   success: function(data)
+					   {
+						   
+						   $('#prgif').hide();
+							if(data==0)
+							{
+								$('#e').html('CNIC number is not Valid!');
+								$('#e').show().delay(2000).fadeOut();
+							} 
+							else if(data==1){
+																
+								$('#validatecnic').slideToggle(function(){
+									$('#castvote').slideDown();
+									getVoterName(cnic);
+								});
+							}
+					   }
+				 });
+			}
+			
+		});
 
     </script>
     <!-- /jquery.inputmask -->
@@ -218,6 +462,12 @@ session_start();
 </body>
 </html>
 
+<?php
 
-                
-            </div>
+		
+	}
+	else
+	{
+		header("Location: ../");
+	}
+?>

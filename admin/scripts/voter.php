@@ -94,6 +94,24 @@ if ($_POST['action']=="cnicexist") {
 }
 }
 
+if(isset($_POST['action'])) {
+if ($_POST['action']=="getvotername") {
+	$cnic = $_POST['cnic'];
+	//preparing query
+	$q = "SELECT voter_Name FROM voter WHERE CNIC = '$cnic'";		//return total num of rows in voter table
+	
+	$r = $mysqli->query($q); //executing query
+	
+	$result = $r->fetch_row();
+	$result = $result[0];
+	
+}
+}
+
+
+
+
+
 // Return result
 
 echo $result;

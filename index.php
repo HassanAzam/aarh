@@ -124,7 +124,26 @@
 				
 				//Validating CNIC and key from database
 				
+				$q = "SELECT CNIC,proctoringKey FROM ro WHERE CNIC='$cnic'";
 				
+				$r = $mysqli->query($q);
+				
+				$row = $r->fetch_row();
+				
+				if($row[1]==$pkey)
+				{
+					echo $row[1];
+					$_SESSION['valid'] = true;
+					$_SESSION['cnic'] = $row[0];
+					$_SESSION['pkey'] = $row[1];
+					
+					header('Location: votingportal/dashboard.php');
+				}
+				else
+				{
+					$msg = "Please provide correct CNIC or Proctoring Key";
+					$m = true;
+				}
 		}
 		
 		/*else
@@ -158,8 +177,8 @@
 			<div class="form">
 				
 				<form class="login-form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-				  <input type="text" placeholder="Enter CNIC" name="cnic" required/>
-				  <input type="password" placeholder="Proctoring Key" name="pkey" required/>
+				<input type="text" class="form-control" name="cnic" data-inputmask="'mask': '99999-9999999-9'" placeholder="Enter CNIC" required>
+				<input type="password" placeholder="Proctoring Key" name="pkey" required/>
 				  <button type="submit" name="submit">login</button>
 				  <p class="message">Forgot Key? <a href="#">Click Here</a></p>
 				  </br>
@@ -180,7 +199,18 @@
 			
 		</div>
 		
+	<!-- jQuery -->
+    <script src="admin/vendors/jquery/dist/jquery.min.js"></script>
 		
+	<!-- jquery.inputmask -->
+    <script src="admin/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+	<!-- jquery.inputmask -->
+    <script>
+      $(document).ready(function() {
+        $(":input").inputmask();
+      });
+    </script>
+    <!-- /jquery.inputmask -->
 	
 	</body>
 </html>
