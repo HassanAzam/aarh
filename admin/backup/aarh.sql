@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2016 at 02:28 AM
+-- Generation Time: Nov 01, 2016 at 07:02 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -93,14 +93,17 @@ CREATE TABLE IF NOT EXISTS `nominee` (
   PRIMARY KEY (`nominee_ID`),
   UNIQUE KEY `CNIC` (`CNIC`),
   UNIQUE KEY `party_ID` (`party_ID`,`const_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `nominee`
 --
 
 INSERT INTO `nominee` (`nominee_ID`, `CNIC`, `party_ID`, `const_ID`) VALUES
-(12, '42101-3978849-9', 1, 2);
+(13, '42101-3978849-9', 2, 1),
+(14, '42101-9959672-9', 2, 3),
+(15, '42101-1234567-8', 3, 2),
+(16, '49843-9483948-3', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -113,14 +116,16 @@ CREATE TABLE IF NOT EXISTS `party` (
   `party_Name` varchar(255) NOT NULL,
   `party_Flag` varchar(255) NOT NULL,
   PRIMARY KEY (`party_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `party`
 --
 
 INSERT INTO `party` (`party_ID`, `party_Name`, `party_Flag`) VALUES
-(1, 'PTI', 'upload/cache.png');
+(2, 'PTI', 'upload/pti.jpg'),
+(3, 'PMLN', 'upload/pmln.jpg'),
+(4, 'PPP', 'upload/ppp.jpg');
 
 -- --------------------------------------------------------
 
@@ -134,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `pollingstation` (
   `town_ID` int(11) NOT NULL,
   PRIMARY KEY (`poll_ID`),
   UNIQUE KEY `town_ID` (`town_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `pollingstation`
@@ -142,7 +147,8 @@ CREATE TABLE IF NOT EXISTS `pollingstation` (
 
 INSERT INTO `pollingstation` (`poll_ID`, `poll_Name`, `town_ID`) VALUES
 (1, 'tesd', 13),
-(2, 'Test', 16);
+(2, 'Test', 16),
+(3, 'Poll', 14);
 
 -- --------------------------------------------------------
 
@@ -165,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `ro` (
 --
 
 INSERT INTO `ro` (`ro_ID`, `CNIC`, `poll_ID`, `proctoringKey`) VALUES
-(1, '42101-0012547-8', 2, 'moiz');
+(2, '42101-3978849-9', 3, 'hassan');
 
 -- --------------------------------------------------------
 
@@ -228,8 +234,9 @@ CREATE TABLE IF NOT EXISTS `voter` (
 --
 
 INSERT INTO `voter` (`CNIC`, `voter_Name`, `gender`, `address`, `mobileNumber`, `town_ID`, `city_ID`) VALUES
-('42101-0012547-8', 'Abdul Moiz Khan', 'm', 'PECHS, Mehmoodabad', '0315-9845326', 16, 0),
-('42101-3978849-9', 'Hassan Azam', 'm', '55/9, NEw Karachi', '0334-3387918', 0, 0),
+('42101-1234567-8', 'Nawaz', 'm', 'Islamabad', '6544-5455354', 15, 2),
+('42101-3978849-9', 'Muhammad Hassan Azam', 'm', 'R123, Sector D-9', '0334-3387918', 14, 1),
+('42101-9959672-9', 'Abdul Basit', 'm', 'Sector 5-L', '0347-2452335', 14, 1),
 ('49843-9483948-3', 'Syed Rafay', 'm', 'NED', '2545-4545454', 16, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
