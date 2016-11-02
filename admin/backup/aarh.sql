@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2016 at 07:02 PM
+-- Generation Time: Nov 02, 2016 at 04:40 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -164,14 +164,15 @@ CREATE TABLE IF NOT EXISTS `ro` (
   PRIMARY KEY (`ro_ID`),
   UNIQUE KEY `CNIC` (`CNIC`,`poll_ID`),
   UNIQUE KEY `proctoringKey` (`proctoringKey`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ro`
 --
 
 INSERT INTO `ro` (`ro_ID`, `CNIC`, `poll_ID`, `proctoringKey`) VALUES
-(2, '42101-3978849-9', 3, 'hassan');
+(2, '42101-3978849-9', 3, 'hassan'),
+(3, '49843-9483948-3', 2, 'rafay');
 
 -- --------------------------------------------------------
 
@@ -210,7 +211,14 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `nominee_ID` int(11) NOT NULL,
   PRIMARY KEY (`vote_ID`),
   UNIQUE KEY `CNIC` (`CNIC`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `vote`
+--
+
+INSERT INTO `vote` (`vote_ID`, `CNIC`, `poll_ID`, `nominee_ID`) VALUES
+(1, '42101-3978849-9', 3, 13);
 
 -- --------------------------------------------------------
 
