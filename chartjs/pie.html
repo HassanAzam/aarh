@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="Chart.js"></script>
+</head>
+
+<body>
+
+<div width="400px" height="200px">
+	<canvas id="myChart"></canvas>
+</div>	
+
+	<script>
+	var ctx = document.getElementById("myChart");
+	var data = {
+    labels: [
+        "ANP",
+        "PTI",
+        "ABC",
+		"PPP",
+    ],
+    datasets: [
+        {
+            data: [51234, 78956, 46576, 48976],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56",
+				"#E7E9ED"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56",
+				"#E7E8ED"
+            ]
+        }]
+};
+	var options = {
+	scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+	}
+	
+	new Chart(ctx, {
+    data: data,
+    type: 'pie',
+    options: options
+});
+	</script>
+
+</body>
+</html>

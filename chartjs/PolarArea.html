@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="Chart.js"></script>
+</head>
+
+<body>
+
+<div width="400px" height="400px">
+	<canvas id="myChart" ></canvas>
+</div>	
+
+	<script>
+	var ctx = document.getElementById("myChart");
+	var data = {
+    datasets: [{
+        data: [
+            17000,
+            15000,
+            9831,
+            9876,
+            12156
+        ],
+        backgroundColor: [
+            "#FF6384",
+            "#4BC0C0",
+            "#FFCE56",
+            "#E7E9ED",
+            "#36A2EB"
+        ],
+        label: 'Voting Results' // for legend
+    }],
+    labels: [
+        "PPP",
+        "PTI",
+        "ABC",
+        "ISIS",
+        "ANP"
+    ]
+};
+	var options = {
+	
+	}
+	
+	new Chart(ctx, {
+    data: data,
+    type: 'polarArea',
+    options: options
+});
+	</script>
+
+</body>
+</html>
