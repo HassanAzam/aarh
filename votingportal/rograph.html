@@ -1,29 +1,4 @@
-<?php
-	require('../admin/scripts/connection.php');
-	session_start();
-	if(isset($_SESSION['valid']))
-	{
-		if($_SESSION['valid']==true)
-		{
-			$cnic = $_SESSION['cnic'];
-			$pkey = $_SESSION['pkey'];
-			
-			//getting data from DB
-			
-			$q = "SELECT R.ro_ID, V.voter_name, P.poll_Name
-			      FROM ro R, voter V, pollingstation P
-				  WHERE R.CNIC = '$cnic'
-				  and   R.CNIC = V.CNIC
-				  and   R.poll_ID = P.poll_ID";
-			$r = $mysqli->query($q);
-			
-			$result = $r->fetch_row();
-			
-			$roid = $result[0];
-			$name = $result[1];
-			$pollname = $result[2];
-			
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +11,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+	<!-- Chart JS -->
+  <script src="../chartjs/Chart.js"></script>
+	<!-- Chart JS -->
 </head>
  
  
@@ -53,13 +31,13 @@
                 <ul class="nav" id="main-menu" >
 
                     <li>
-                        <a class="active-menu" href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="votingarea.php"><i class="fa fa-desktop"></i> Voting Area</a>
                     </li>
 					<li>
-                        <a href="rograph.html"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
+                        <a class="active-menu" href="rograph.html"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
                     </li>
 					<li>
                         <a href="logout.php"><i class="fa fa-bar-chart-o"></i>Logout</a>
@@ -111,71 +89,49 @@
             <div id="page-inner">
 
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-header">
-                            Dashboard <small>Summary of this Polling Station</small>
-                        </h1>
-                    </div>
-                </div>
-                
-				
-				<!-- First Row -->
-	<div class="row">
-	
-								<!-- First Block  -->
-		<div class="col-md-3 col-sm-12 col-xs-12">
-			<div class="panel panel-primary text-center no-boder bg-color-brown">
-				<div class="panel-body">
-					<i class="fa fa-users fa-5x"></i>
-					<h3><?php echo $name; ?></h3>
-				</div>
-					<div class="panel-footer back-footer-brown">Name of Returning Officer</div>
-			</div>
-		</div>
-								<!-- First Block -->
-								
-								
-								<!-- Second Block -->
-		<div class="col-md-3 col-sm-12 col-xs-12">
-			<div class="panel panel-primary text-center no-boder bg-color-blue">
-				<div class="panel-body">
-					<i class="fa fa-expeditedssl fa-5x"></i>
-					<h3><?php echo $roid; ?> </h3>
-				</div>
-				<div class="panel-footer back-footer-blue">ID of R.O.</div>
-			</div>
-		</div>
-								<!-- Second Block -->
-								
-								
-								<!-- Third Block -->
-		<div class="col-md-3 col-sm-12 col-xs-12">
-			<div class="panel panel-primary text-center no-boder bg-color-red">
-				<div class="panel-body">
-					<i class="fa fa fa-foursquare fa-5x"></i>
-					<h3><?php echo $pollname; ?></h3>
-				</div>
-				<div class="panel-footer back-footer-red">Name of Polling Station</div>
-			</div>
-		</div>
-								<!-- Third Block -->
-								
-								
-								<!-- Fourth Block -->
-		<div class="col-md-3 col-sm-12 col-xs-12">
-			<div class="panel panel-primary text-center no-boder bg-color-green">
-				<div class="panel-body">
-					<i class="fa fa-pie-chart fa-5x"></i>
-					<h3>12,630</h3>
-				</div>
-				<div class="panel-footer back-footer-green">Number of votes cast</div>
-			</div>
-			</div>
-								<!-- Fourth Block -->
+				<div width="400px" height="200px">
+	<canvas id="myChart"></canvas>
+</div>	
+
+	<script>
+			var ctx = document.getElementById("myChart");
+			var data = {
+			labels: [
+				"ANP",
+				"PTI",
+				"ABC",
+				"PPP",
+			],
+			datasets: [
+				{
+					data: [51234, 78956, 46576, 48976],
+					backgroundColor: [
+						"#FF6384",
+						"#36A2EB",
+						"#FFCE56",
+						"#E7E9ED"
+					],
+					hoverBackgroundColor: [
+						"#FF6384",
+						"#36A2EB",
+						"#FFCE56",
+						"#E7E8ED"
+					]
+				}]
+		};
+			var options = {
+			
+			}
+			
+			new Chart(ctx, {
+			data: data,
+			type: 'doughnut',
+			options: options
+		});
+	</script>
 			
 		
-	</div>
+			</div>
 								<!-- First Row -->
 																
 								
