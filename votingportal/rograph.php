@@ -1,3 +1,36 @@
+<?php
+	require('../admin/scripts/connection.php');
+	session_start();
+	if(isset($_SESSION['valid']))
+	{
+		if($_SESSION['valid']==true)
+		{
+			$cnic = $_SESSION['cnic'];
+			$pkey = $_SESSION['pkey'];
+			
+			//getting data from DB
+			
+			$q = "SELECT R.ro_ID, V.voter_name, P.poll_Name
+			      FROM ro R, voter V, pollingstation P
+				  WHERE R.CNIC = '$cnic'
+				  and   R.CNIC = V.CNIC
+				  and   R.poll_ID = P.poll_ID";
+			$r = $mysqli->query($q);
+			
+			$result = $r->fetch_row();
+			
+			$roid = $result[0];
+			$name = $result[1];
+			$pollname = $result[2];
+			
+			$q = "SELECT COUNT(*) FROM vote WHERE poll_ID = 
+					(SELECT poll_ID FROM pollingstation WHERE poll_name='$pollname')";
+			$r = $mysqli->query($q);
+			
+			$result = $r->fetch_row();
+			$totalvotes = $result[0];
+			
+?>
 
 
 <!DOCTYPE html>
@@ -87,7 +120,7 @@
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
-
+<?php echo "Votes casted in this Polling Station : <b>".$totalvotes."</b>";?>
 
 				<div width="400px" height="200px">
 	<canvas id="myChart"></canvas>
