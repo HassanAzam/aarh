@@ -23,32 +23,65 @@
 			$name = $result[1];
 			$pollname = $result[2];
 			
+			// Get total number of votes casted in current polling station
 			$q = "SELECT COUNT(*) FROM vote WHERE poll_ID = 
 					(SELECT poll_ID FROM pollingstation WHERE poll_name='$pollname')";
 			$r = $mysqli->query($q);
-			
-			//$result = $r->fetch_row();
 			$totalvotes = $r->num_rows;
 			
+			// Get pollid of current R.O.
 			$q1 = "SELECT poll_ID FROM pollingstation WHERE poll_name = '$pollname'";
 			$r1 = $mysqli->query($q1);
 			$result = $r1->fetch_row();
 			$pollid = $result[0];
 			
+			// Get const_ID of current R.O.
 			$q2 = "SELECT const_ID FROM town WHERE town_ID = 
 								(SELECT town_ID FROM voter WHERE cnic = '$cnic')";
 			$r2 = $mysqli->query($q2);
 			$result = $r2->fetch_row();
 			$constid = $result[0];
 			
-			$q3 = "SELECT nominee_ID FROM nominee WHERE const_ID = '$constid'";
+			// Get Nominee's and Party ID's of current constituency
+			$q3 = "SELECT nominee_ID, party_ID FROM nominee WHERE const_ID = '$constid'";
 			$r3 = $mysqli->query($q3);
-			$i=1;
-			$nominees = '';
+			$i=0;
+			$nominees = array();
 			while($row = $r3->fetch_assoc()) {
-				$nominees .= "Nom".$i++." ID : ";
-				$nominees .= $row['nominee_ID'];
-				$nominees .= "<br/>";
+				$nominees[$i++] = [$row['nominee_ID'], $row['party_ID']];
+			}
+			$tempNomID;
+			$votecount = array();
+			for ($x=0 ; $x<sizeof($nominees) ; $x++){
+				$tempNomID = $nominees[$x][0]; 
+				$q4 = "SELECT COUNT(*) FROM vote WHERE poll_ID = '$pollid' AND nominee_ID = '$tempNomID'";
+				$r4 = $mysqli->query($q4);
+				$result = $r4->fetch_row();
+				$votecount[$x] = $result[0];
+			}
+			// $nominees[0][0] = First nominees ID
+			// $nominees[0][1] = First nominees party ID
+			// $nominees[1][0] = Second nominees ID
+			// $nominees[1][1] = Second nominees party ID
+			
+			for($k=0;$k<sizeof($nominees);$k++)
+			{			
+				//Get party names for chart
+				$partyid = $nominees[$k][1];
+				$query = "SELECT party_Name FROM party WHERE party_ID = '$partyid'";
+				$re = $mysqli->query($query);
+				$par = $re->fetch_row();
+				$partyNames[$k] = $par[0];
+			}
+			
+			for($a=0;$a<sizeof($nominees);$a++)
+			{			
+				//Get party names for chart
+				$partyid = $nominees[$a][0];
+				$query = "SELECT COUNT(*) FROM vote WHERE nominee_ID = '$partyid' AND poll_ID='$pollid'";
+				$re = $mysqli->query($query);
+				$par = $re->fetch_row();
+				$partyVotes[$a] = $par[0];
 			}
 			
 ?>
@@ -142,40 +175,43 @@
         <div id="page-wrapper">
             <div id="page-inner">
 <?php echo "Votes casted in this Polling Station : <b>".$totalvotes."</b>";?>
-<br>
+<br/>
 <?php echo "Poll id : <b>".$pollid."</b>";?>
-<br>
+<br/>
 <?php echo "Const id : <b>".$constid."</b>";?>
-<br>
-<?php echo $nominees;?>
+<br/>
+<?php echo "Total Nominees in this Constituency : <b>".sizeof($nominees)."</b><br/>";
+for ($x=0 ; $x<sizeof($nominees) ; $x++){
+	echo "Nominee #".($x+1)." ID = <b>" . $nominees[$x][0] . "</b> Party ID = <b>" . $nominees[$x][1] . "</b> Votes : <b>".$votecount[$x]."</b><br/>";
+}
+?>
 
 				<div width="400px" height="200px">
 	<canvas id="myChart"></canvas>
 </div>	
 
 	<script>
+			
+			var partyNamesArray = [<?php echo '"'.implode('","', $partyNames).'"' ?>];
+			var partyVotesArray = [<?php echo '"'.implode('","', $partyVotes).'"' ?>];
+
 			var ctx = document.getElementById("myChart");
 			var data = {
-			labels: [
-				"ANP",
-				"PTI",
-				"ABC",
-				"PPP",
-			],
+			labels: partyNamesArray,
 			datasets: [
 				{
-					data: [51234, 78956, 46576, 48976],
+					data: partyVotesArray,
 					backgroundColor: [
 						"#FF6384",
-						"#36A2EB",
-						"#FFCE56",
-						"#E7E9ED"
+						"#36A2EB"
+						// "#FFCE56",
+						// "#E7E9ED"
 					],
 					hoverBackgroundColor: [
 						"#FF6384",
-						"#36A2EB",
-						"#FFCE56",
-						"#E7E8ED"
+						"#36A2EB"
+						// "#FFCE56",
+						// "#E7E8ED"
 					]
 				}]
 		};
