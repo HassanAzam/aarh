@@ -84,12 +84,31 @@ if ($_POST['countvoter']=="countvoter") {
 if(isset($_POST['action'])) {
 if ($_POST['action']=="cnicexist") {
 	$cnic = $_POST['cnic'];
+	$pollid = $_POST['pollid'];
 	//preparing query
-	$q = "SELECT * FROM voter WHERE CNIC = '$cnic'";		//return total num of rows in voter table
-	
+	$q = "Select poll_ID from pollingstation WHERE town_ID = (SELECT town_ID FROM voter WHERE CNIC = '$cnic')";		//return total num of rows in voter table
 	$r = $mysqli->query($q); //executing query
+
+	//checking if user already casted the vote
+	$q1 = "Select vote_ID from vote where CNIC = '$cnic'";
+	$r1 = $mysqli->query($q1); 
+	$isvotecasted = $r1->num_rows;	
+
+	$a = $r->num_rows;
+	$poll = $r->fetch_row();
+	$poll = $poll[0];
 	
-	$result = $r->num_rows;
+	if($poll == $pollid){
+		$result = 1;
+		if($isvotecasted == 1)
+			$result = 3;
+	}
+	else
+		$result = 2;
+
+        if($a == 0)
+		$result = 0;
+
 	
 }
 }

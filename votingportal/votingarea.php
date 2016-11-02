@@ -10,11 +10,12 @@ session_start();
 			
 			//getting data from DB
 			
-			$q = "SELECT R.ro_ID, V.voter_name, P.poll_Name
+			$q = "SELECT R.ro_ID, V.voter_name, P.poll_Name, R.poll_ID
 			      FROM ro R, voter V, pollingstation P
 				  WHERE R.CNIC = '$cnic'
 				  and   R.CNIC = V.CNIC
 				  and   R.poll_ID = P.poll_ID";
+
 			$r = $mysqli->query($q);
 			
 			$result = $r->fetch_row();
@@ -24,6 +25,10 @@ session_start();
 			$roid = $result[0];
 			$name = $result[1];
 			$pollname = $result[2];
+			$pollid = $result[3];
+			
+
+			echo "<div id='pollid' style='display:none;'>".$pollid."</div>";
 			
 			$q1 = "SELECT C.const_Name
 				   FROM constituency C
@@ -255,6 +260,7 @@ session_start();
 						</div>
 						
 					<h3 id="vname" style="color:#225081; padding:5px;"></h3>
+					<div id="evote" style="margin:10px 0 0 0; padding:8px; background-color:red; color:#fff;"></div>
 					
 					<div class="party">
 						
@@ -281,7 +287,8 @@ session_start();
 					<div class="constname">
 					
 						<div style="color:#fff; font-size:40px; text-align:center;"><?php echo $constname; ?></div>
-					
+						<button style="background-color:#333; border:none; color:#fff; padding:10px; margin-top:10px;" id="castvote1">Cast your VOTE</button>
+
 					</div>
 					
 				</div>
@@ -407,10 +414,11 @@ session_start();
 		
 		$('#vald').click(function(){
 			
-			
-			
+						
 			var cnic = $('#cnic').val();
-			console.log(cnic=='');
+			var pollid = $('#pollid').text();
+			
+			
 			if(cnic == ''){
 				$('#e').html('Please provide CNIC number');
 				$('#e').show().delay(2000).fadeOut();
@@ -420,14 +428,14 @@ session_start();
 				$.ajax({
 					   type: "POST",
 					   url: '../admin/scripts/voter.php',
-					   data: { action : 'cnicexist', cnic : cnic}, // serializes the form's elements.
+					   data: { action : 'cnicexist', cnic : cnic, pollid : pollid}, // serializes the form's elements.
 					   success: function(data)
 					   {
 						   
 						   $('#prgif').hide();
 							if(data==0)
 							{
-								$('#e').html('CNIC number is not Valid!');
+								$('#e').html('CNIC number is not in VoterList!');
 								$('#e').show().delay(2000).fadeOut();
 							} 
 							else if(data==1){
@@ -437,11 +445,58 @@ session_start();
 									getVoterName(cnic);
 								});
 							}
+							else if(data==2){
+																
+								$('#e').html('You cannot vote in this pollingstation!');
+								$('#e').show().delay(2000).fadeOut();
+							}
+							else if(data==3){
+																
+								$('#e').html('You already casted your vote!');
+								$('#e').show().delay(2000).fadeOut();
+							}
+							console.log(data);
 					   }
 				 });
 			}
 			
 		});
+
+	$('#castvote1').click(function(){
+			
+			
+			var cnic1 = $('#cnic').val();
+			var pollid1 = $('#pollid').text();
+			var partyid = $('#selectImage').val();
+
+			$.ajax({
+					   type: "POST",
+					   url: '../admin/scripts/vote.php',
+					   data: { action : 'addvote', cnic : cnic1, pollid : pollid1, partyid : partyid}, // serializes the form's elements.
+					   success: function(data)
+					   {
+						   
+						   alert(data);
+							if(data==1)
+							{
+								$('#evote').html('Your Vote has been casted successfully!');
+								$('#evote').show().delay(2000).fadeOut();
+								$('#castvote').slideToggle(function(){
+									$('#validatecnic').slideDown();
+								});
+							} 
+							else{
+																
+								$('#evote').html('Theres some error in casting your vote! Please try again');
+								$('#evote').show().delay(2000).fadeOut();
+							}
+							
+					   }
+				 });
+
+		});
+
+
 
     </script>
     <!-- /jquery.inputmask -->

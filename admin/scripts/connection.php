@@ -12,7 +12,7 @@ $mysqli = new mysqli('localhost',$user,$pw,$db);
 // If connection was not successful, handle the error
 if($mysqli->connect_error) {
     // Handle error
-	die("Connection to DB failed: " . $conn->connect_error);
+	die("Connection to DB failed: " . $mysqli->connect_error);
 }
 else
 {
