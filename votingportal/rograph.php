@@ -27,8 +27,29 @@
 					(SELECT poll_ID FROM pollingstation WHERE poll_name='$pollname')";
 			$r = $mysqli->query($q);
 			
-			$result = $r->fetch_row();
-			$totalvotes = $result[0];
+			//$result = $r->fetch_row();
+			$totalvotes = $r->num_rows;
+			
+			$q1 = "SELECT poll_ID FROM pollingstation WHERE poll_name = '$pollname'";
+			$r1 = $mysqli->query($q1);
+			$result = $r1->fetch_row();
+			$pollid = $result[0];
+			
+			$q2 = "SELECT const_ID FROM town WHERE town_ID = 
+								(SELECT town_ID FROM voter WHERE cnic = '$cnic')";
+			$r2 = $mysqli->query($q2);
+			$result = $r2->fetch_row();
+			$constid = $result[0];
+			
+			$q3 = "SELECT nominee_ID FROM nominee WHERE const_ID = '$constid'";
+			$r3 = $mysqli->query($q3);
+			$i=1;
+			$nominees = '';
+			while($row = $r3->fetch_assoc()) {
+				$nominees .= "Nom".$i++." ID : ";
+				$nominees .= $row['nominee_ID'];
+				$nominees .= "<br/>";
+			}
 			
 ?>
 
@@ -121,6 +142,12 @@
         <div id="page-wrapper">
             <div id="page-inner">
 <?php echo "Votes casted in this Polling Station : <b>".$totalvotes."</b>";?>
+<br>
+<?php echo "Poll id : <b>".$pollid."</b>";?>
+<br>
+<?php echo "Const id : <b>".$constid."</b>";?>
+<br>
+<?php echo $nominees;?>
 
 				<div width="400px" height="200px">
 	<canvas id="myChart"></canvas>
