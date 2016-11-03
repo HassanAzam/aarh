@@ -236,17 +236,6 @@
 			
 			
 			
-<?php echo "Votes casted in this Polling Station : <b>".$totalvotes."</b>";?>
-<br/>
-<?php echo "Poll id : <b>".$pollid."</b>";?>
-<br/>
-<?php echo "Const id : <b>".$constid."</b>";?>
-<br/>
-<?php echo "Total Nominees in this Constituency : <b>".sizeof($nominees)."</b><br/>";
-for ($x=0 ; $x<sizeof($nominees) ; $x++){
-	echo "Nominee #".($x+1)." ID = <b>" . $nominees[$x][0] . "</b> Party ID = <b>" . $nominees[$x][1] . "</b> Votes : <b>".$votecount[$x]."</b><br/>";
-}
-?>
 
 				<div width="400px" height="200px">
 	<canvas id="myChart"></canvas>
@@ -256,6 +245,12 @@ for ($x=0 ; $x<sizeof($nominees) ; $x++){
 			
 			var partyNamesArray = [<?php echo '"'.implode('","', $partyNames).'"' ?>];
 			var partyVotesArray = [<?php echo '"'.implode('","', $partyVotes).'"' ?>];
+			var colors = ["#FF6384", "#36A2EB", "#FFCE56", "#E7E9ED", "#4B0082", "#F5DEB3"];
+			var colorsToShow=[];
+			for (var i=0; i<partyNamesArray.length ; ++i)
+			{
+				colorsToShow[i] = colors[i];
+			}
 
 			var ctx = document.getElementById("myChart");
 			var data = {
@@ -263,18 +258,8 @@ for ($x=0 ; $x<sizeof($nominees) ; $x++){
 			datasets: [
 				{
 					data: partyVotesArray,
-					backgroundColor: [
-						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E9ED"
-					],
-					hoverBackgroundColor: [
-						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E8ED"
-					]
+					backgroundColor: colorsToShow,
+					hoverBackgroundColor: colorsToShow
 				}]
 		};
 			var options = {
