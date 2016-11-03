@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2016 at 04:40 PM
+-- Generation Time: Nov 03, 2016 at 10:10 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -33,8 +33,16 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `admin_Name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `CNIC` varchar(30) NOT NULL,
-  PRIMARY KEY (`admin_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`admin_ID`),
+  UNIQUE KEY `admin_Name` (`admin_Name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`admin_ID`, `admin_Name`, `password`, `CNIC`) VALUES
+(1, 'admin', 'admin', '42101-3978849-9');
 
 -- --------------------------------------------------------
 
@@ -164,15 +172,14 @@ CREATE TABLE IF NOT EXISTS `ro` (
   PRIMARY KEY (`ro_ID`),
   UNIQUE KEY `CNIC` (`CNIC`,`poll_ID`),
   UNIQUE KEY `proctoringKey` (`proctoringKey`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ro`
 --
 
 INSERT INTO `ro` (`ro_ID`, `CNIC`, `poll_ID`, `proctoringKey`) VALUES
-(2, '42101-3978849-9', 3, 'hassan'),
-(3, '49843-9483948-3', 2, 'rafay');
+(2, '42101-3978849-9', 3, 'hassan');
 
 -- --------------------------------------------------------
 
@@ -211,14 +218,7 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `nominee_ID` int(11) NOT NULL,
   PRIMARY KEY (`vote_ID`),
   UNIQUE KEY `CNIC` (`CNIC`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `vote`
---
-
-INSERT INTO `vote` (`vote_ID`, `CNIC`, `poll_ID`, `nominee_ID`) VALUES
-(1, '42101-3978849-9', 3, 13);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
