@@ -175,10 +175,10 @@ session_start();
                         <a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a class="active-menu" href="votingarea.html"><i class="fa fa-desktop"></i> Voting Area</a>
+                        <a class="active-menu" href="votingarea.php"><i class="fa fa-desktop"></i> Voting Area</a>
                     </li>
 					<li>
-                        <a href="rograph.html"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
+                        <a href="rograph.php"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
                     </li>
                     <!-- <li>
                         <a href="tab-panel.html"><i class="fa fa-qrcode"></i> Tabs &amp; Panels</a>

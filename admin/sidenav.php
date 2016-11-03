@@ -4,7 +4,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Voting System</span></a>
+              <a href="index.php" class="site_title"><i class="fa fa-paw"></i> <span>Voting System</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -29,48 +29,48 @@
               <div class="menu_section">
                  <!--<h3>General</h3>-->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home </a>
+                  <li><a href="index.php"><i class="fa fa-home"></i> Home </a>
                   </li>
                   <li><a><img class="customicon" src="images/icons/voter.png"/> Manage Voters <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addvoter.html">Add Voter</a></li>
+                      <li><a href="addvoter.php">Add Voter</a></li>
                       <li><a href="searchvoter.php">Search Voters</a></li>
                     </ul>
                   </li>
                   <li><a><img class="customicon" src="images/icons/constituency.png"/> Manage Constituency <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addconst.html">Add Constituency</a></li>
+                      <li><a href="addconst.php">Add Constituency</a></li>
                       <li><a href="searchconst.php">Search Constituency</a></li>
                     </ul>
                   </li>
                   <li><a><img class="customicon" src="images/icons/city.png"/> Manage Cities <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addcity.html">Add City</a></li>
+                      <li><a href="addcity.php">Add City</a></li>
                       <li><a href="searchcity.php">Search City</a></li>
                     </ul>
                   </li>
                   <li><a><img class="customicon" src="images/icons/town.png"/> Manage Towns <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addtown.html">Add Town</a></li>
+                      <li><a href="addtown.php">Add Town</a></li>
                       <li><a href="searchtown.php">Search Town</a></li>
                     </ul>
                   </li>
                   <li><a><img class="customicon" src="images/icons/polling.png"/>Manage Polling Stations <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="addpoll.html">Add Polling Station</a></li>
+                      <li><a href="addpoll.php">Add Polling Station</a></li>
                       <li><a href="searchpoll.php">Search Polling Station</a></li>
                     </ul>
                   </li>
 				  <li><a><img class="customicon" src="images/icons/ro.png"/> Manage R.Os <span class="fa fa-chevron-down"></span></a>
 					<ul class="nav child_menu">
-                      <li><a href="addro.html">Add R.O</a></li>
+                      <li><a href="addro.php">Add R.O</a></li>
                       <li><a href="searchro.php">Search R.O</a></li>
                     </ul>
                   </li>
 				  
 				  <li><a><img class="customicon" src="images/icons/party.png"/> Manage Parties<span class="fa fa-chevron-down"></span></a>
 					<ul class="nav child_menu">
-                      <li><a href="addparty.html">Add Party</a></li>
+                      <li><a href="addparty.php">Add Party</a></li>
                       <li><a href="searchparty.php">Search Party</a></li>
                     </ul>
 				  
@@ -78,7 +78,7 @@
 				  
 				  <li><a><img class="customicon" src="images/icons/nominee.png"/> Manage Nominees <span class="fa fa-chevron-down"></span></a>
 					<ul class="nav child_menu">
-                      <li><a href="addnominee.html">Add Nominee</a></li>
+                      <li><a href="addnominee.php">Add Nominee</a></li>
                       <li><a href="searchnominee.php">Search Nominees</a></li>
                     </ul>
                   </li>
@@ -165,15 +165,8 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    
+                    <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 				<!--

@@ -124,7 +124,7 @@
                         <a href="votingarea.php"><i class="fa fa-desktop"></i> Voting Area</a>
                     </li>
 					<li>
-                        <a class="active-menu" href="rograph.html"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
+                        <a class="active-menu" href="rograph.php"><i class="fa fa-bar-chart-o"></i>Voting Trends</a>
                     </li>
 					<li>
                         <a href="logout.php"><i class="fa fa-bar-chart-o"></i>Logout</a>

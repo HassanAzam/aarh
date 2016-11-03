@@ -1,16 +1,3 @@
-<?php
-
-session_start();
-
-	if(isset($_SESSION['valid']))
-	{
-		if($_SESSION['valid']==true)
-		{
-			$cnic = $_SESSION['cnic'];
-			$adminid = $_SESSION['adminid'];
-			
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,6 +15,10 @@ session_start();
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+	<!-- iCheck -->
+    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	<!-- Switchery -->
+    <link href="vendors/switchery/dist/switchery.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
@@ -75,29 +66,47 @@ session_start();
 			width:70%;
 			
 		}
+		
+		.notification
+		{
+			background-color:#1ABB9C; color:white; padding:10px; margin-bottom:20px; font-weight:bold;
+			display:none;
+		}
 	</style>
   </head>
 
-  <?php require('sidenav.php'); ?>
+    <?php require('sidenav.php'); ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>HOME</h3>
+                <h3>Manage Cities</h3>
+				<div class="notification" id="notif">
+					
+				</div>
               </div>
 
-              
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>DASHBOARD</h2>
+                    <h2>Add City</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -115,73 +124,33 @@ session_start();
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-				  <!-- Content -->
-                  <div class="x_content">
-                      
-					  <div class="row">
-						<a href="searchcity.php" class="col-xs-12 col-md-3 dcard" style="background-color:#F5233E;">
-							<h3>15</h3>
-							<div class="dcarddiv">
-								<h4>Cities</h4>
-								<img src="images/icons/city.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchconst.php" class="col-xs-12 col-md-3 dcard" style="background-color:#1EBFAE;">
-							<h3>75</h3>
-							<div class="dcarddiv">
-								<h4>Constituency</h4>
-								<img src="images/icons/constituency.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchtown.php" class="col-xs-12 col-md-3 dcard" style="background-color:#FFB53E;">
-							<h3>150</h3>
-							<div class="dcarddiv">
-								<h4>Towns</h4>
-								<img src="images/icons/town.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchpoll.php" class="col-xs-12 col-md-3 dcard" style="background-color:#30A5FF;">
-							<h3>150</h3>
-							<div class="dcarddiv">
-								<h4>Polling Stations</h4>
-								<img src="images/icons/polling.png" alt="cities" />
-							</div>
-						</a>
-					  </div>
+				  
+				  <div class="x_content">
+                    <br>
+                    <form class="form-horizontal form-label-left" id="addCityForm">
+
+						
+						<input type="hidden" name="action" value="addcity"/>
+					
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Enter City Name</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" name="cityName" placeholder="Karachi,Quetta ..." required>
+                        </div>
+                      </div>
 					  
-					  <div class="row">
-						<a href="searchvoter.php" class="col-xs-12 col-md-3 dcard" style="background-color:#30A5FF;">
-							<h3 id="totalVoters">150k</h3>
-							<div class="dcarddiv">
-								<h4>Voters</h4>
-								<img src="images/icons/voter.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchro.php" class="col-xs-12 col-md-3 dcard" style="background-color:#FFB53E;">
-							<h3>15</h3>
-							<div class="dcarddiv">
-								<h4>R.O</h4>
-								<img src="images/icons/ro.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchparty.php" class="col-xs-12 col-md-3 dcard" style="background-color:#1EBFAE;">
-							<h3>7</h3>
-							<div class="dcarddiv">
-								<h4>Political Parties</h4>
-								<img src="images/icons/party.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchnominee.php" class="col-xs-12 col-md-3 dcard" style="background-color:#F5233E;">
-							<h3>525</h3>
-							<div class="dcarddiv">
-								<h4>Nominees</h4>
-								<img src="images/icons/nominee.png" alt="cities" />
-							</div>
-						</a>
-					  </div>
 					  
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                          
+                          <button type="submit" class="btn btn-success">Add City</button>
+                        </div>
+                      </div>
+
+                    </form>
                   </div>
-				  <!-- /Content --> 
+				  
                 </div>
               </div>
             </div>
@@ -208,40 +177,53 @@ session_start();
     <script src="vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="vendors/nprogress/nprogress.js"></script>
+	<!-- iCheck -->
+    <script src="vendors/iCheck/icheck.min.js"></script>
+	<script src="vendors/switchery/dist/switchery.min.js"></script>
+	<!-- jquery.inputmask -->
+    <script src="vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     
-	<!-- Custom AJAX request jquery code -->
+	<!-- custom jquery for ajax requests -->
 	
-		<script>
-			
-			$( document ).ready(function() {
-				
-					$.ajax({
-					   type: "POST",
-					   url: 'scripts/voter.php',
-					   data: {countvoter : 'countvoter'},		//sending 'countvoter' token so that php know what to do
-					   success: function(data)
-					   {
-							$('#totalVoters').text(data);
-					   }
-					});
-				
+	
+	<script>
+		
+		//------------------------------------------------------------------------------------
+		//AddVoterScript
+		
+		$("#addCityForm").submit(function(e) {
+
+		var url = "scripts/city.php"; // the script we handle the form input.
+
+		$.ajax({
+			   type: "POST",
+			   url: url,
+			   data: $("#addCityForm").serialize(), // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#notif').text(data);	
+					$('#notif').show().delay(2000).fadeOut();
+			   }
+			 });
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
 			});
 			
-		</script>
+		//--------------------------------------------------------------------------------------
+			
+	</script>
+	<!-- /custom jquery for ajax requests -->
 	
-	<!-- Custom AJAX request jquery code -->
-
+	
+	<!-- jquery.inputmask -->
+    <script>
+      $(document).ready(function() {
+        $(":input").inputmask();
+      });
+    </script>
+    <!-- /jquery.inputmask -->
+	
     <!-- Custom Theme Scripts -->
     <script src="build/js/custom.min.js"></script>
   </body>
 </html>
-
-<?php
-		}
-	}
-	else
-	{
-		header("Location: login.php");
-	}
-
-?>
