@@ -1,5 +1,5 @@
 <?php
-
+require("scripts/connection.php");
 session_start();
 
 	if(isset($_SESSION['valid']))
@@ -8,6 +8,21 @@ session_start();
 		{
 			$cnic = $_SESSION['cnic'];
 			$adminid = $_SESSION['adminid'];
+			
+			//Golden Query for counting votes
+			$query = "SELECT P.party_Name, COUNT( V.vote_ID ) AS votes
+					FROM party P, vote V, nominee N
+					WHERE V.nominee_ID = N.nominee_ID
+					AND N.party_ID = P.party_ID
+					GROUP BY P.party_Name";
+					
+			$re = $mysqli->query($query);
+			$u=0;
+			while($row = $re->fetch_assoc())
+			{
+				$partyNames[$u] = $row['party_Name'];
+				$partyVotes[$u++] = $row['votes'];
+			}
 			
 ?>
 
@@ -87,7 +102,7 @@ session_start();
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>HOME</h3>
+                <h3>Voting Results and Trends</h3>
               </div>
 
               
@@ -95,89 +110,13 @@ session_start();
 
             <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>DASHBOARD</h2>
-                    
-                    <div class="clearfix"></div>
-                  </div>
-				  <!-- Content -->
-                  <div class="x_content">
-                      
-					  <div class="row">
-						<a href="searchcity.php" class="col-xs-12 col-md-3 dcard" style="background-color:#F5233E;">
-							<h3>15</h3>
-							<div class="dcarddiv">
-								<h4>Cities</h4>
-								<img src="images/icons/city.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchconst.php" class="col-xs-12 col-md-3 dcard" style="background-color:#1EBFAE;">
-							<h3>75</h3>
-							<div class="dcarddiv">
-								<h4>Constituency</h4>
-								<img src="images/icons/constituency.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchtown.php" class="col-xs-12 col-md-3 dcard" style="background-color:#FFB53E;">
-							<h3>150</h3>
-							<div class="dcarddiv">
-								<h4>Towns</h4>
-								<img src="images/icons/town.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchpoll.php" class="col-xs-12 col-md-3 dcard" style="background-color:#30A5FF;">
-							<h3>150</h3>
-							<div class="dcarddiv">
-								<h4>Polling Stations</h4>
-								<img src="images/icons/polling.png" alt="cities" />
-							</div>
-						</a>
-					  </div>
-					  
-					  <div class="row">
-						<a href="searchvoter.php" class="col-xs-12 col-md-3 dcard" style="background-color:#30A5FF;">
-							<h3 id="totalVoters">150k</h3>
-							<div class="dcarddiv">
-								<h4>Voters</h4>
-								<img src="images/icons/voter.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchro.php" class="col-xs-12 col-md-3 dcard" style="background-color:#FFB53E;">
-							<h3>15</h3>
-							<div class="dcarddiv">
-								<h4>R.O</h4>
-								<img src="images/icons/ro.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchparty.php" class="col-xs-12 col-md-3 dcard" style="background-color:#1EBFAE;">
-							<h3>7</h3>
-							<div class="dcarddiv">
-								<h4>Political Parties</h4>
-								<img src="images/icons/party.png" alt="cities" />
-							</div>
-						</a>
-						<a href="searchnominee.php" class="col-xs-12 col-md-3 dcard" style="background-color:#F5233E;">
-							<h3>525</h3>
-							<div class="dcarddiv">
-								<h4>Nominees</h4>
-								<img src="images/icons/nominee.png" alt="cities" />
-							</div>
-						</a>
-					  </div>
-					  
-                  </div>
-				  <!-- /Content --> 
-                </div>
-              </div>
+            
 			  
 			  <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2 style="font-weight:bold;">VOTING RESULTS</h2>
+                    <h2 style="font-weight:bold;">OverAll Result</h2>
                     
                     <div class="clearfix"></div>
                   </div>
@@ -199,35 +138,99 @@ session_start();
 					  
 					  <div class="row" id="vr">
 							<div class="col-xs-12 dcard" style="background-color:#F5233E;">
-							<h3 id="regvoters"></h3>
-							<div class="dcarddiv">
-								<h4>Total Number Of Registered Voters</h4>
-								
-							</div>
-							</div>
-						<div class="col-xs-12 dcard" style="background-color:#1EBFAE;">
 							<h3 id="votescount"></h3>
 							<div class="dcarddiv">
 								<h4>Total Number Of Votes Casted</h4>
 								
 							</div>
+							</div>
+						<div class="col-xs-12 dcard" style="background-color:#1EBFAE;">
+							<h3 id="leadingparty"></h3>
+							<div class="dcarddiv">
+								<h4>Leading Party</h4>
+								
+							</div>
 						</div>
 						<div class="col-xs-12 dcard" style="background-color:#F5233E;">
-							<h3 id="turnout"></h3>
+							<h3 id="leadingpartyvotes"></h3>
 							<div class="dcarddiv">
-								<h4>TurnOut Ratio</h4>
+								<h4>Leading Party Votes</h4>
 								
 							</div>
 						</div>
 					  </div>
 					  </div>
-					  <div class="row">
-						<a href="result.php" class="col-xs-12 col-md-12" style="background-color:#333;">
-							<div style="text-align:center; font-weight:bold; color:#fff;">
-								<h4>Check Detailed Results</h4>						
+					  
+					  
+					  
+                  </div>
+				  <!-- /Content --> 
+                </div>
+              </div>
+            </div>
+			
+			
+			<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2 style="font-weight:bold;">Result By Constituency</h2>
+                    
+                    <div class="clearfix"></div>
+                  </div>
+				  
+				  
+				  
+				  <!-- Content -->
+                  <div class="x_content">
+				  
+				  
+				  
+				  <div style="width:50%; height:400px; margin-top:50px; float:left; ">
+					<div id="constselect" style="padding-bottom:80px;">
+					<div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Constituency</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control" name="constid" id="listconst">
+                           
+                          </select>
+						  <button id="rbcbutton">Load Result</button>
+                        </div>
+                      </div>
+				  </div>	
+					<canvas style="height:400px; " id="constChart"></canvas>
+				  </div>
+				  
+                      
+					  <div style="float:right; width:40%;">
+					  
+					  
+					  
+					  <div class="row" id="vr">
+							<div class="col-xs-12 dcard" style="background-color:#F5233E;">
+							<h3 id="votescount"></h3>
+							<div class="dcarddiv">
+								<h4>Total Number Of Votes Casted</h4>
+								
 							</div>
-						</a>
+							</div>
+						<div class="col-xs-12 dcard" style="background-color:#1EBFAE;">
+							<h3 id="leadingparty"></h3>
+							<div class="dcarddiv">
+								<h4>Leading Party</h4>
+								
+							</div>
+						</div>
+						<div class="col-xs-12 dcard" style="background-color:#F5233E;">
+							<h3 id="leadingpartyvotes"></h3>
+							<div class="dcarddiv">
+								<h4>Leading Party Votes</h4>
+								
+							</div>
+						</div>
 					  </div>
+					  </div>
+					  
 					  
 					  
                   </div>
@@ -261,29 +264,96 @@ session_start();
     <!-- NProgress -->
     <script src="vendors/nprogress/nprogress.js"></script>
     
+	<script>
+		function indexOfMax(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+
+    return maxIndex;
+}
+	</script>
+	
 	<!-- ChartJS Code -->
 		<script>
 			function drawChart(){
 				
-			var totalvoters = document.getElementById("totalVoters").textContent;
-			var votescount = document.getElementById("votescount").textContent;
+			var partyNamesArray = [<?php echo '"'.implode('","', $partyNames).'"' ?>];
+			var partyVotesArray = [<?php echo '"'.implode('","', $partyVotes).'"' ?>];
+			
+			
+			
+			var leadingPartyIndex = indexOfMax(partyVotesArray);
+			
+			$('#leadingparty').text(partyNamesArray[leadingPartyIndex]);
+			$('#leadingpartyvotes').text(partyVotesArray[leadingPartyIndex]);
+			
 			var ctx = document.getElementById("myChart");
 			var data = {
-			labels: ["Total Number Of Registered Voters","Total Number Of Vote Casted"],
+			labels: partyNamesArray,
 			datasets: [
 				{
-					data: [totalvoters,votescount],
+					data: partyVotesArray,
 					backgroundColor: [
 						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E9ED"
+						"#36A2EB",
+					    "#FFCE56",
 					],
 					hoverBackgroundColor: [
 						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E8ED"
+						"#36A2EB",
+					    "#FFCE56",
+					]
+				}]
+		};
+			var options = {
+				responsive : true
+			}
+			
+			new Chart(ctx, {
+			data: data,
+			type: 'pie',
+			options: options
+		});
+			}
+			
+			function drawconstChart(){
+				
+			var partyNamesArray = [<?php echo '"'.implode('","', $partyNames).'"' ?>];
+			var partyVotesArray = [<?php echo '"'.implode('","', $partyVotes).'"' ?>];
+			
+			
+			
+			var leadingPartyIndex = indexOfMax(partyVotesArray);
+			
+			$('#leadingparty').text(partyNamesArray[leadingPartyIndex]);
+			$('#leadingpartyvotes').text(partyVotesArray[leadingPartyIndex]);
+			
+			var ctx = document.getElementById("constChart");
+			var data = {
+			labels: partyNamesArray,
+			datasets: [
+				{
+					data: partyVotesArray,
+					backgroundColor: [
+						"#FF6384",
+						"#36A2EB",
+					    "#FFCE56",
+					],
+					hoverBackgroundColor: [
+						"#FF6384",
+						"#36A2EB",
+					    "#FFCE56",
 					]
 				}]
 		};
@@ -308,6 +378,36 @@ session_start();
 			
 			$( document ).ready(function() {
 				
+					$.ajax({
+			   type: "POST",
+			   url: 'scripts/const.php',
+			   data: { listallconst : 'listallconst'}, // serializes the form's elements.
+			   success: function(data)
+			   {
+					$('#listconst').html(data);	
+			   }
+			 });
+			 
+			 $('#rbcbutton').click(function(){
+				 
+				 var constid = $('#listconst').val();
+				 alert(constid);
+				 $.ajax({
+					   type: "POST",
+					   url: 'scripts/vote.php',
+					   data: {action : 'constvotescount', constid : constid},		//sending 'countvoter' token so that php know what to do
+					   success: function(data)
+					   {
+							
+							
+							alert(data);						
+							
+							drawconstChart();
+					   }
+					});
+				 
+			 });
+				
 					function getTR(){	
 					$.ajax({
 					   type: "POST",
@@ -322,10 +422,10 @@ session_start();
 							var tv = $('#regvoters').text();
 							var vc = $('#votescount').text();
 							var tr = vc/tv*100;
-							tr = tr.toFixed(0);
 							tr += '%';
 							$('#turnout').text(tr);
 							drawChart();
+							drawconstChart();
 					   }
 					});
 				}

@@ -54,11 +54,11 @@ if ($_POST['action']=="addvote") {
 //-----------------------------------------------------------------------------------
 
 // Confirm that it's count voter request
-if(isset($_POST['countvoter'])) {
-if ($_POST['countvoter']=="countvoter") {
+if(isset($_POST['action'])) {
+if ($_POST['action']=="totalvotescount") {
 	
 	//preparing query
-	$q = "SELECT COUNT(*) FROM voter";		//return total num of rows in voter table
+	$q = "SELECT COUNT(*) FROM vote";		//return total num of rows in voter table
 	
 	$r = $mysqli->query($q); //executing query
 	
@@ -78,43 +78,35 @@ if ($_POST['countvoter']=="countvoter") {
 	$result = $count[0];
 }
 }
-//*** Add Voter Code Ends
-//-----------------------------------------------------------------------------------
 
 
 if(isset($_POST['action'])) {
-if ($_POST['action']=="cnicexist") {
-	$cnic = $_POST['cnic'];
-	$pollid = $_POST['pollid'];
-	//preparing query
-	$q = "Select poll_ID from pollingstation WHERE town_ID = (SELECT town_ID FROM voter WHERE CNIC = '$cnic')";		//return total num of rows in voter table
-	$r = $mysqli->query($q); //executing query
-	$a = $r->num_rows;
-	$poll = $r->fetch_row();
-	$poll = $poll[0];
+if ($_POST['action']=="constvotescount") {
 	
-	if($poll == $pollid)
-		$result = 1;
-	else
-		$result = 2;
+	$constid = $_POST['constid'];
+	
+	//Golden Query for counting votes
+			$query = "SELECT C.const_Name, P.party_Name, COUNT( V.vote_ID ) AS votes
+					FROM party P, vote V, nominee N, constituency C
+					WHERE V.nominee_ID = N.nominee_ID
+					AND N.party_ID = P.party_ID
+					AND N.const_ID = C.const_ID
+					AND C.const_ID =  '$constid'
+					GROUP BY C.const_Name, P.party_Name";
+					
+			$re = $mysqli->query($query);
+			$u=0;
+			while($row = $re->fetch_assoc())
+			{
+				$partyNames[$u] = $row['party_Name'];
+				$partyVotes[$u++] = $row['votes'];
+			}
 
-        if($a == 0)
-		$result = 0;
+	$result = array();
+	$result[0] = $partyNames;
+	$result[1] = $partyVotes;
 	
-}
-}
-
-if(isset($_POST['action'])) {
-if ($_POST['action']=="getvotername") {
-	$cnic = $_POST['cnic'];
-	//preparing query
-	$q = "SELECT voter_Name FROM voter WHERE CNIC = '$cnic'";		//return total num of rows in voter table
-	
-	$r = $mysqli->query($q); //executing query
-	
-	$result = $r->fetch_row();
-	$result = $result[0];
-	
+	//return array from php to js
 }
 }
 

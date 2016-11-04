@@ -52,7 +52,7 @@ session_start();
 				$party[$j] = $r2row['party_ID'];
 				$j++;
 			}
-			echo '<script>alert('.$party[1].')</script>';
+			
 		}
 ?>
 <!DOCTYPE html>
@@ -287,7 +287,7 @@ session_start();
 					<div class="constname">
 					
 						<div style="color:#fff; font-size:40px; text-align:center;"><?php echo $constname; ?></div>
-						<button style="background-color:#333; border:none; color:#fff; padding:10px; margin-top:10px;" id="castvote1">Cast your VOTE</button>
+						<button style="color:#333; margin:10px auto; border:none; background-color:#fff; padding:10px;" id="castvote1">Cast your VOTE</button>
 
 					</div>
 					
@@ -351,24 +351,9 @@ session_start();
 			   }
 			 });
 									
-										$('#entercnic').click(function(){
-										var cnic = $('#cnic').val();
 										
-											$.ajax({
-											
-											   type: "POST",
-											   url: '../scripts/voter.php',
-											   data: { action : 'cnicexist', cnic : cnic}, // serializes the form's elements.
-											   success: function(data)
-											   {
-														alert(data);
-														
-											   }
-											});
-											
-										});
 										
-									$( document ).ready(function() {
+			$( document ).ready(function() {
 				$('#listallparty').change(function(){
 					//getConst($(this).val());
 					console.log($(this).val());
@@ -481,7 +466,8 @@ session_start();
 							{
 								$('#evote').html('Your Vote has been casted successfully!');
 								$('#evote').show().delay(2000).fadeOut();
-								$('#castvote').slideToggle(function(){
+								$('#cnic').val('');
+								$('#castvote').delay(2000).slideToggle(function(){
 									$('#validatecnic').slideDown();
 								});
 							} 

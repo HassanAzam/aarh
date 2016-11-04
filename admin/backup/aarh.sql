@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2016 at 10:10 AM
+-- Generation Time: Nov 04, 2016 at 04:10 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `nominee` (
   PRIMARY KEY (`nominee_ID`),
   UNIQUE KEY `CNIC` (`CNIC`),
   UNIQUE KEY `party_ID` (`party_ID`,`const_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `nominee`
@@ -111,7 +111,8 @@ INSERT INTO `nominee` (`nominee_ID`, `CNIC`, `party_ID`, `const_ID`) VALUES
 (13, '42101-3978849-9', 2, 1),
 (14, '42101-9959672-9', 2, 3),
 (15, '42101-1234567-8', 3, 2),
-(16, '49843-9483948-3', 4, 1);
+(16, '49843-9483948-3', 4, 1),
+(19, '78787-8787878-7', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -147,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `pollingstation` (
   `town_ID` int(11) NOT NULL,
   PRIMARY KEY (`poll_ID`),
   UNIQUE KEY `town_ID` (`town_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `pollingstation`
@@ -156,7 +157,8 @@ CREATE TABLE IF NOT EXISTS `pollingstation` (
 INSERT INTO `pollingstation` (`poll_ID`, `poll_Name`, `town_ID`) VALUES
 (1, 'tesd', 13),
 (2, 'Test', 16),
-(3, 'Poll', 14);
+(3, 'Poll', 14),
+(4, 'College', 15);
 
 -- --------------------------------------------------------
 
@@ -172,14 +174,15 @@ CREATE TABLE IF NOT EXISTS `ro` (
   PRIMARY KEY (`ro_ID`),
   UNIQUE KEY `CNIC` (`CNIC`,`poll_ID`),
   UNIQUE KEY `proctoringKey` (`proctoringKey`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ro`
 --
 
 INSERT INTO `ro` (`ro_ID`, `CNIC`, `poll_ID`, `proctoringKey`) VALUES
-(2, '42101-3978849-9', 3, 'hassan');
+(2, '42101-3978849-9', 3, 'hassan'),
+(3, '42101-1234567-8', 4, 'nawaz');
 
 -- --------------------------------------------------------
 
@@ -218,7 +221,19 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `nominee_ID` int(11) NOT NULL,
   PRIMARY KEY (`vote_ID`),
   UNIQUE KEY `CNIC` (`CNIC`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `vote`
+--
+
+INSERT INTO `vote` (`vote_ID`, `CNIC`, `poll_ID`, `nominee_ID`) VALUES
+(1, '42101-3978849-9', 3, 13),
+(2, '13513-5165151-5', 3, 16),
+(3, '42101-9959672-9', 3, 16),
+(4, '42101-2206355-7', 3, 13),
+(5, '42101-1234567-8', 4, 15),
+(6, '12661-8152135-1', 4, 19);
 
 -- --------------------------------------------------------
 
@@ -242,10 +257,15 @@ CREATE TABLE IF NOT EXISTS `voter` (
 --
 
 INSERT INTO `voter` (`CNIC`, `voter_Name`, `gender`, `address`, `mobileNumber`, `town_ID`, `city_ID`) VALUES
+('12661-8152135-1', 'Fahad', 'm', 'D8, Building', '6163-5135413', 15, 2),
+('13513-5165151-5', 'Amjad', 'm', 'Defence', '4457-7757575', 14, 1),
 ('42101-1234567-8', 'Nawaz', 'm', 'Islamabad', '6544-5455354', 15, 2),
+('42101-2206355-7', 'Muhammad Azam Khan', 'm', '5-L', '3516-5151515', 14, 1),
 ('42101-3978849-9', 'Muhammad Hassan Azam', 'm', 'R123, Sector D-9', '0334-3387918', 14, 1),
 ('42101-9959672-9', 'Abdul Basit', 'm', 'Sector 5-L', '0347-2452335', 14, 1),
-('49843-9483948-3', 'Syed Rafay', 'm', 'NED', '2545-4545454', 16, 1);
+('49843-9483948-3', 'Syed Rafay', 'm', 'NED', '2545-4545454', 16, 1),
+('54616-8161813-5', 'Ali', 'm', 'dfj', '4545-1154115', 15, 2),
+('78787-8787878-7', 'Imran', 'm', 'Bani Gala', '7878-7878787', 15, 2);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
