@@ -27,7 +27,8 @@
 			$q = "SELECT COUNT(*) FROM vote WHERE poll_ID = 
 					(SELECT poll_ID FROM pollingstation WHERE poll_name='$pollname')";
 			$r = $mysqli->query($q);
-			$totalvotes = $r->num_rows;
+			$result = $r->fetch_row();
+			$totalvotes = $result[0];
 			
 			// Get pollid of current R.O.
 			$q1 = "SELECT poll_ID FROM pollingstation WHERE poll_name = '$pollname'";
@@ -174,17 +175,67 @@
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
-<?php echo "Votes casted in this Polling Station : <b>".$totalvotes."</b>";?>
-<br/>
-<?php echo "Poll id : <b>".$pollid."</b>";?>
-<br/>
-<?php echo "Const id : <b>".$constid."</b>";?>
-<br/>
-<?php echo "Total Nominees in this Constituency : <b>".sizeof($nominees)."</b><br/>";
-for ($x=0 ; $x<sizeof($nominees) ; $x++){
-	echo "Nominee #".($x+1)." ID = <b>" . $nominees[$x][0] . "</b> Party ID = <b>" . $nominees[$x][1] . "</b> Votes : <b>".$votecount[$x]."</b><br/>";
-}
-?>
+			
+			<!-- First Row -->
+	<div class="row">
+	
+								<!-- First Block  -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-brown">
+				<div class="panel-body">
+					<i class="fa fa-hashtag fa-5x"></i>
+					<h3><?php echo $pollid; ?></h3>
+				</div>
+					<div class="panel-footer back-footer-brown">Polling Station ID</div>
+			</div>
+		</div>
+								<!-- First Block -->
+								
+								
+								<!-- Second Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-blue">
+				<div class="panel-body">
+					<i class="fa fa-building-o fa-5x"></i>
+					<h3><?php echo $constid; ?></h3>
+				</div>
+				<div class="panel-footer back-footer-blue">Constituency ID</div>
+			</div>
+		</div>
+								<!-- Second Block -->
+								
+								
+								<!-- Third Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-red">
+				<div class="panel-body">
+					<i class="fa fa fa-foursquare fa-5x"></i>
+					<h3><?php echo $pollname; ?></h3>
+				</div>
+				<div class="panel-footer back-footer-red">Name of Polling Station</div>
+			</div>
+		</div>
+								<!-- Third Block -->
+								
+								
+								<!-- Fourth Block -->
+		<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="panel panel-primary text-center no-boder bg-color-green">
+				<div class="panel-body">
+					<i class="fa fa-pie-chart fa-5x"></i>
+					<h3><?php echo $totalvotes; ?></h3>
+				</div>
+				<div class="panel-footer back-footer-green">Number of votes cast</div>
+			</div>
+			</div>
+								<!-- Fourth Block -->
+			
+		
+	</div>
+								<!-- First Row -->
+			
+			
+			
 
 				<div width="400px" height="200px">
 	<canvas id="myChart"></canvas>
@@ -194,6 +245,12 @@ for ($x=0 ; $x<sizeof($nominees) ; $x++){
 			
 			var partyNamesArray = [<?php echo '"'.implode('","', $partyNames).'"' ?>];
 			var partyVotesArray = [<?php echo '"'.implode('","', $partyVotes).'"' ?>];
+			var colors = ["#FF6384", "#36A2EB", "#FFCE56", "#E7E9ED", "#4B0082", "#F5DEB3"];
+			var colorsToShow=[];
+			for (var i=0; i<partyNamesArray.length ; ++i)
+			{
+				colorsToShow[i] = colors[i];
+			}
 
 			var ctx = document.getElementById("myChart");
 			var data = {
@@ -201,18 +258,8 @@ for ($x=0 ; $x<sizeof($nominees) ; $x++){
 			datasets: [
 				{
 					data: partyVotesArray,
-					backgroundColor: [
-						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E9ED"
-					],
-					hoverBackgroundColor: [
-						"#FF6384",
-						"#36A2EB"
-						// "#FFCE56",
-						// "#E7E8ED"
-					]
+					backgroundColor: colorsToShow,
+					hoverBackgroundColor: colorsToShow
 				}]
 		};
 			var options = {
